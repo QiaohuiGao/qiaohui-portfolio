@@ -590,6 +590,31 @@
       gap: 10px;
     }
 
+    .project-archive {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 28px;
+    }
+
+    .project-archive a {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border: 1px solid rgba(189, 217, 233, 0.32);
+      background: rgba(8, 16, 24, 0.62);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .project-archive a:hover {
+      background: rgba(125, 181, 177, 0.16);
+      border-color: var(--water);
+      transform: translateX(3px);
+    }
+
     .skills {
       background:
         linear-gradient(90deg, rgba(16, 24, 32, 0.96), rgba(18, 38, 45, 0.9)),
@@ -1261,6 +1286,9 @@
               </ul>
             </div>
           </details>
+        </div>
+        <div class="project-archive">
+          <a href="projects/index.html">Explore six product case studies <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
