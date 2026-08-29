@@ -1,0 +1,13 @@
+.DS_Store
+.claude/
+.gstack/
+.vercel/
+
+# Local drafts and source photos not used by the published site
+847177468b8dab02f14e4b1b0817b37f.JPG
+_DSC0434.JPG
+main page.JPG
+bonnie_portfolio_light_mountain_html.html
+
+# Keep private documents out of the public Pages repository
+*.pdf

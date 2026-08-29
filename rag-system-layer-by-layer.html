@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A layer-by-layer guide to designing production RAG systems, from ingestion and chunking to retrieval, reliability, evaluation, and cost governance." />
+  <meta name="theme-color" content="#0b151d" />
+  <meta property="og:title" content="Designing a RAG System, Layer by Layer | Bonnie Gao" />
+  <meta property="og:description" content="The pipeline behind a production RAG system, and the question worth asking at each layer." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="assets/rag-system-layers-diagram.png" />
+  <title>Designing a RAG System, Layer by Layer | Bonnie Gao</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650;9..144,750&family=Instrument+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep: #0b151d;
+      --deep-soft: #14232d;
+      --paper: #f3ede3;
+      --paper-deep: #e7ddce;
+      --ink: #16202a;
+      --muted: #68737a;
+      --line: rgba(22, 32, 42, 0.17);
+      --cream: #fbf7ef;
+      --blue: #2f6fed;
+      --water: #7db5b1;
+      --stone: #d8c1a1;
+      --canyon: #b96c4d;
+      --max: 1180px;
+      --nav-height: 72px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 104px;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 4px;
+    }
+
+    .reading-progress {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--blue);
+    }
+
+    .nav {
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      left: 0;
+      right: 0;
+      min-height: var(--nav-height);
+      color: var(--cream);
+      border-bottom: 1px solid rgba(247, 241, 230, 0.14);
+    }
+
+    .nav-inner {
+      width: min(var(--max), calc(100% - 42px));
+      min-height: var(--nav-height);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 23px;
+      font-weight: 750;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: rgba(247, 241, 230, 0.72);
+      font-size: 13px;
+      font-weight: 760;
+      transition: color 180ms ease, transform 180ms ease;
+    }
+
+    .back-link:hover {
+      color: var(--cream);
+      transform: translateX(-3px);
+    }
+
+    .article-hero {
+      position: relative;
+      isolation: isolate;
+      min-height: 690px;
+      padding: 166px 0 88px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 83% 22%, rgba(185, 108, 77, 0.18), transparent 26rem),
+        linear-gradient(135deg, #0b151d 0%, #142630 62%, #101820 100%);
+      color: var(--cream);
+    }
+
+    .hero-contours {
+      position: absolute;
+      z-index: -1;
+      top: 48px;
+      right: -60px;
+      width: min(54vw, 760px);
+      height: 640px;
+      color: rgba(216, 193, 161, 0.16);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      width: min(980px, calc(100% - 42px));
+      margin: 0 auto;
+    }
+
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      color: var(--stone);
+      font-size: 12px;
+      font-weight: 820;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    .pull-quote {
+      font-family: "Fraunces", Georgia, serif;
+    }
+
+    h1 {
+      max-width: 960px;
+      font-size: clamp(54px, 7.5vw, 96px);
+      font-weight: 650;
+      line-height: 0.98;
+      letter-spacing: -0.025em;
+    }
+
+    .hero-deck {
+      max-width: 720px;
+      margin-top: 32px;
+      color: rgba(247, 241, 230, 0.75);
+      font-size: clamp(19px, 2vw, 24px);
+      line-height: 1.45;
+    }
+
+    .hero-rule {
+      width: 100%;
+      height: 1px;
+      margin: 52px 0 20px;
+      background: rgba(247, 241, 230, 0.18);
+    }
+
+    .hero-byline {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      color: rgba(247, 241, 230, 0.58);
+      font-size: 13px;
+    }
+
+    .figure-wrap {
+      position: relative;
+      z-index: 3;
+      width: min(1380px, calc(100% - 42px));
+      margin: -54px auto 0;
+      padding: 14px;
+      background: var(--cream);
+      border: 1px solid rgba(22, 32, 42, 0.12);
+      box-shadow: 0 24px 70px rgba(8, 16, 24, 0.18);
+    }
+
+    .figure-wrap img {
+      width: 100%;
+      height: auto;
+    }
+
+    .figure-wrap figcaption {
+      padding: 13px 6px 1px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .article-layout {
+      width: min(1100px, calc(100% - 42px));
+      margin: 0 auto;
+      padding: 106px 0 128px;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 720px);
+      gap: 90px;
+      align-items: start;
+    }
+
+    .system-map {
+      position: sticky;
+      top: 34px;
+      padding-top: 10px;
+    }
+
+    .map-label {
+      margin-bottom: 19px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 820;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .system-map ol {
+      position: relative;
+      list-style: none;
+    }
+
+    .system-map ol::before {
+      content: "";
+      position: absolute;
+      top: 13px;
+      bottom: 13px;
+      left: 12px;
+      width: 1px;
+      background: rgba(22, 32, 42, 0.18);
+    }
+
+    .map-link {
+      position: relative;
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 12px;
+      align-items: center;
+      min-height: 46px;
+      color: rgba(22, 32, 42, 0.47);
+      font-size: 12px;
+      font-weight: 760;
+      transition: color 180ms ease;
+    }
+
+    .map-link::before {
+      content: attr(data-step);
+      position: relative;
+      z-index: 1;
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(22, 32, 42, 0.2);
+      border-radius: 50%;
+      background: var(--paper);
+      font-size: 10px;
+      transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+    }
+
+    .map-link:hover,
+    .map-link.active {
+      color: var(--ink);
+    }
+
+    .map-link.active::before {
+      color: white;
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+
+    .article-body {
+      min-width: 0;
+    }
+
+    .article-body > p,
+    .layer-section > p {
+      margin-bottom: 24px;
+      color: rgba(22, 32, 42, 0.83);
+      font-size: 18px;
+      line-height: 1.84;
+    }
+
+    .article-body .opening {
+      color: var(--ink);
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(26px, 3vw, 34px);
+      line-height: 1.4;
+    }
+
+    .article-body .opening::first-letter {
+      float: left;
+      margin: 8px 10px 0 0;
+      color: var(--canyon);
+      font-size: 4.1em;
+      font-weight: 650;
+      line-height: 0.72;
+    }
+
+    .principle-callout {
+      position: relative;
+      margin: 58px 0 74px;
+      padding: 34px 38px 36px;
+      overflow: hidden;
+      border-left: 4px solid var(--canyon);
+      background: var(--paper-deep);
+    }
+
+    .principle-callout::after {
+      content: "constraint → architecture";
+      position: absolute;
+      right: 24px;
+      bottom: 8px;
+      color: rgba(22, 32, 42, 0.08);
+      font-size: 26px;
+      font-weight: 820;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .callout-label {
+      margin-bottom: 12px;
+      color: var(--canyon);
+      font-size: 11px;
+      font-weight: 840;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    .principle-callout h2 {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 18px;
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 650;
+      line-height: 1.08;
+    }
+
+    .principle-callout p {
+      position: relative;
+      z-index: 1;
+      color: rgba(22, 32, 42, 0.76);
+      font-size: 17px;
+    }
+
+    .layer-section {
+      margin-top: 76px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .layer-heading {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 28px;
+    }
+
+    .layer-number {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--deep);
+      color: var(--cream);
+      font-size: 12px;
+      font-weight: 820;
+    }
+
+    .layer-heading h2 {
+      font-size: clamp(34px, 4vw, 49px);
+      font-weight: 650;
+      line-height: 1.08;
+    }
+
+    .core-question {
+      margin-top: 9px;
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 760;
+      line-height: 1.45;
+    }
+
+    .failure-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 32px 0;
+    }
+
+    .failure-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: rgba(251, 247, 239, 0.64);
+    }
+
+    .failure-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    .failure-card span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .cross-layer {
+      margin-top: 92px;
+      padding: 46px;
+      background: var(--deep);
+      color: var(--cream);
+    }
+
+    .cross-layer .callout-label {
+      color: var(--water);
+    }
+
+    .cross-layer h2 {
+      max-width: 570px;
+      margin-bottom: 22px;
+      font-size: clamp(36px, 5vw, 54px);
+      font-weight: 650;
+      line-height: 1.04;
+    }
+
+    .cross-layer p {
+      color: rgba(247, 241, 230, 0.72);
+      font-size: 17px;
+    }
+
+    .cross-layer p + p {
+      margin-top: 18px;
+    }
+
+    .conclusion-title {
+      margin: 10px 0 28px;
+      font-size: clamp(36px, 5vw, 54px);
+      font-weight: 650;
+      line-height: 1.06;
+    }
+
+    .pull-quote {
+      margin: 76px 0;
+      padding: 8px 0 8px 34px;
+      border-left: 1px solid var(--canyon);
+      color: var(--ink);
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 500;
+      line-height: 1.22;
+    }
+
+    .article-end {
+      background: var(--deep-soft);
+      color: var(--cream);
+    }
+
+    .article-end-inner {
+      width: min(980px, calc(100% - 42px));
+      margin: 0 auto;
+      padding: 78px 0 84px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .article-end h2 {
+      max-width: 680px;
+      margin-bottom: 12px;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 650;
+      line-height: 1.05;
+    }
+
+    .article-end p {
+      color: rgba(247, 241, 230, 0.65);
+    }
+
+    .end-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 48px;
+      padding: 0 20px;
+      border: 1px solid rgba(247, 241, 230, 0.24);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 820;
+      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .end-link:hover {
+      transform: translateX(-3px);
+      border-color: rgba(125, 181, 177, 0.62);
+      background: rgba(125, 181, 177, 0.14);
+    }
+
+    footer {
+      padding: 32px 21px 40px;
+      background: var(--deep);
+      color: rgba(247, 241, 230, 0.52);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .article-layout {
+        grid-template-columns: 1fr;
+        gap: 54px;
+      }
+
+      .system-map {
+        position: static;
+        overflow-x: auto;
+        padding-bottom: 10px;
+      }
+
+      .system-map ol {
+        width: max-content;
+        display: flex;
+      }
+
+      .system-map ol::before {
+        top: 12px;
+        right: 18px;
+        bottom: auto;
+        left: 12px;
+        width: auto;
+        height: 1px;
+      }
+
+      .map-link {
+        width: 145px;
+        grid-template-columns: 26px 1fr;
+      }
+
+      .article-end-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --nav-height: 66px;
+      }
+
+      .nav-inner,
+      .hero-inner,
+      .article-layout,
+      .article-end-inner {
+        width: min(100% - 24px, var(--max));
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .article-hero {
+        min-height: 620px;
+        padding: 132px 0 72px;
+      }
+
+      .hero-contours {
+        top: 150px;
+        right: -230px;
+        width: 650px;
+      }
+
+      h1 {
+        font-size: clamp(45px, 14vw, 64px);
+      }
+
+      .hero-byline {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .figure-wrap {
+        width: calc(100% - 24px);
+        margin-top: -34px;
+        padding: 8px;
+        overflow-x: auto;
+      }
+
+      .figure-wrap img {
+        width: 980px;
+        max-width: none;
+      }
+
+      .figure-wrap figcaption {
+        position: sticky;
+        left: 0;
+        width: calc(100vw - 42px);
+      }
+
+      .article-layout {
+        padding: 76px 0 90px;
+      }
+
+      .article-body > p,
+      .layer-section > p {
+        font-size: 17px;
+        line-height: 1.78;
+      }
+
+      .principle-callout,
+      .cross-layer {
+        margin-right: -12px;
+        margin-left: -12px;
+        padding: 28px 24px 30px;
+      }
+
+      .principle-callout::after {
+        display: none;
+      }
+
+      .layer-section {
+        margin-top: 62px;
+      }
+
+      .layer-heading {
+        grid-template-columns: 42px 1fr;
+        gap: 12px;
+      }
+
+      .layer-number {
+        width: 38px;
+        height: 38px;
+      }
+
+      .failure-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pull-quote {
+        padding-left: 20px;
+      }
+
+      .article-end-inner {
+        padding: 64px 0 70px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Article navigation">
+    <div class="nav-inner">
+      <a class="logo" href="index.html#home">Bonnie Gao</a>
+      <a class="back-link" href="index.html#field-notes"><span aria-hidden="true">←</span> Back to Field Notes</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="article-hero">
+      <svg class="hero-contours" viewBox="0 0 760 640" fill="none" aria-hidden="true">
+        <path d="M790 48C665 3 570 40 524 112c-45 70-26 150-109 198-83 48-204 6-258 81-54 74 0 154-78 227" stroke="currentColor"/>
+        <path d="M799 101c-103-35-183-5-221 55-40 63-14 128-89 177-76 50-187 19-232 81-47 65 1 128-67 196" stroke="currentColor"/>
+        <path d="M806 157c-85-28-151-1-180 49-34 57-3 105-69 155-68 52-166 31-204 85-39 56 3 104-53 164" stroke="currentColor"/>
+        <path d="M811 217c-67-20-116 3-136 43-28 49 5 83-51 132-58 50-142 41-173 87-31 47 6 79-37 131" stroke="currentColor"/>
+        <circle cx="491" cy="353" r="6" fill="currentColor"/>
+      </svg>
+      <div class="hero-inner">
+        <div class="article-meta">
+          <span>Field Note 01</span><span class="meta-dot"></span><span>AI</span><span class="meta-dot"></span><span>Engineering</span><span class="meta-dot"></span><span>8 min read</span>
+        </div>
+        <h1>Designing a RAG System, Layer by Layer</h1>
+        <p class="hero-deck">The pipeline behind a production system, and the question worth asking at each layer.</p>
+        <div class="hero-rule"></div>
+        <div class="hero-byline"><span>Written by Bonnie Gao</span><span>Systems · Retrieval · Production AI</span></div>
+      </div>
+    </header>
+
+    <figure class="figure-wrap">
+      <img src="assets/rag-system-layers-diagram.png" alt="Diagram showing seven layers of a production RAG system: ingestion, control plane, extraction and normalization, chunking, embedding, indexing and vector store, and retrieval and generation, leading to a grounded cited answer. Evaluation, reliability, and cost governance span every layer." width="1780" height="440" />
+      <figcaption>Figure 1. A production RAG pipeline is a chain of decisions, supported end to end by evaluation, reliability, and cost governance. Scroll horizontally on mobile.</figcaption>
+    </figure>
+
+    <div class="article-layout">
+      <aside class="system-map" aria-label="Article sections">
+        <div class="map-label">System map</div>
+        <ol>
+          <li><a class="map-link active" data-step="1" href="#ingestion">Ingestion</a></li>
+          <li><a class="map-link" data-step="2" href="#control-plane">Control plane</a></li>
+          <li><a class="map-link" data-step="3" href="#normalization">Normalization</a></li>
+          <li><a class="map-link" data-step="4" href="#chunking">Chunking</a></li>
+          <li><a class="map-link" data-step="5" href="#embedding">Embedding</a></li>
+          <li><a class="map-link" data-step="6" href="#indexing">Indexing</a></li>
+          <li><a class="map-link" data-step="7" href="#retrieval">Retrieval</a></li>
+        </ol>
+      </aside>
+
+      <article class="article-body">
+        <p class="opening">Most explanations of retrieval-augmented generation stop at four steps. Chunk your documents, embed them, retrieve the nearest ones, stuff them into a prompt. That description is not wrong, it is just incomplete in the way a floor plan is incomplete for a building. It tells you the rooms exist without telling you which walls are load-bearing.</p>
+
+        <p>I spent a long stretch working through what a production-grade version of this system actually requires, going layer by layer rather than treating “RAG” as one monolithic thing. What follows is a summary of that process, organized the way I now think about it. Each layer gets one core question, the one that in my experience separates a demo from something that survives contact with real data and real users.</p>
+
+        <aside class="principle-callout" aria-labelledby="principle-title">
+          <div class="callout-label">The principle underneath everything</div>
+          <h2 id="principle-title">Let constraints choose the architecture.</h2>
+          <p>Before any layer-by-layer breakdown, one idea kept resurfacing enough that it earned the status of a rule I check every decision against. Architecture should be derived from latency requirements and cost ceilings, not from whichever technology looks most sophisticated. Every time I saw a design go wrong, in my own drafts or in systems I studied, the root cause traced back to a technology chosen before the constraints were pinned down. Ask first how much staleness the users can tolerate and what the budget actually allows. Everything downstream—batch versus streaming, self-hosted models versus an API, a dedicated vector database versus a simple extension on Postgres—falls out of that answer.</p>
+        </aside>
+
+        <section class="layer-section" id="ingestion" data-layer="ingestion">
+          <div class="layer-heading">
+            <div class="layer-number">01</div>
+            <div><h2>Ingestion</h2><p class="core-question">What happens when a source changes without telling you cleanly?</p></div>
+          </div>
+          <p>Every external data source eventually misbehaves. Rate limits, inconsistent formats, permission models that do not map cleanly onto anything you control. The mistake I kept catching myself making early on was treating ingestion as a one-time script rather than a long-lived adapter with its own failure modes.</p>
+          <p>A connector for each source, a shared rate-limiting layer instead of one bolted onto each connector separately, and a habit that took me longer to internalize than it should have: permission metadata has to be captured at the same moment as content, not reconstructed later. If a document has an access list in its source system, that list needs to travel with it from the very first fetch. Bolting permission checks on after the fact almost always leaves a gap somewhere, and that gap is exactly the kind of thing that turns into a real incident.</p>
+        </section>
+
+        <section class="layer-section" id="control-plane" data-layer="control-plane">
+          <div class="layer-heading">
+            <div class="layer-number">02</div>
+            <div><h2>The control plane</h2><p class="core-question">How do you know something changed without reprocessing everything?</p></div>
+          </div>
+          <p>This is the layer most tutorials skip and the one that determines whether a system can survive real scale. Once a corpus is large enough that reprocessing all of it on every run is not viable, you need a cheap, fast way to decide what actually needs expensive work.</p>
+          <p>I settled on a two-tier check. A version number from the source system is nearly free to compare but not fully trustworthy, since a save event does not always mean the content meaningfully changed. A content hash computed after normalization is trustworthy but costs a fetch and a parse to compute. Check the cheap signal first, only fall through to the expensive one when it disagrees.</p>
+          <p>The other lesson here took a failed assumption to learn properly. State cannot be binary. A batch job that partially completes—some chunks embedded and others not—needs a state that is neither success nor failure, or the rest of the system will quietly trust a document that is not actually ready.</p>
+        </section>
+
+        <section class="layer-section" id="normalization" data-layer="normalization">
+          <div class="layer-heading">
+            <div class="layer-number">03</div>
+            <div><h2>Extraction &amp; normalization</h2><p class="core-question">What does the pipeline look like once you stop caring where content came from?</p></div>
+          </div>
+          <p>Heterogeneous sources are inevitable. HTML pages, PDFs, slide decks, images. The trap is writing separate downstream logic for each. A canonical intermediate representation—a single schema that every source format gets converted into before chunking ever touches it—is what keeps the rest of the pipeline from multiplying in complexity every time a new source type shows up.</p>
+          <p>This layer is unglamorous and easy to underinvest in, which is exactly why it tends to be where things quietly break.</p>
+        </section>
+
+        <section class="layer-section" id="chunking" data-layer="chunking">
+          <div class="layer-heading">
+            <div class="layer-number">04</div>
+            <div><h2>Chunking</h2><p class="core-question">What should the actual unit of retrieval be?</p></div>
+          </div>
+          <p>A chunk is not a token budget problem, it is a retrieval unit, and those are different design goals. Fixed-length splitting is the fastest way to a working prototype and the fastest way to a ceiling on quality, since it ignores every structural and semantic boundary in the source text. Structure-aware and semantic splitting close part of that gap.</p>
+          <p>The part that took the longest to actually understand, rather than just name, is what happens at the edges between chunks. An entity introduced in one paragraph and referenced only by pronoun in the next will lose that connection the moment a splitter draws a line between them. Newer techniques—generating a short contextual note for each chunk before embedding it, or encoding the full document first and only splitting afterward—exist because this problem does not have a clean solution otherwise.</p>
+          <p>The other habit worth building here is measuring chunk stability, not just retrieval accuracy. A strategy where a one-line edit reshuffles every downstream chunk boundary is expensive in ways that only show up once you are running incremental updates in production, not during a one-time evaluation run.</p>
+        </section>
+
+        <div class="pull-quote">A chunk is not a token budget problem. It is a retrieval unit.</div>
+
+        <section class="layer-section" id="embedding" data-layer="embedding">
+          <div class="layer-heading">
+            <div class="layer-number">05</div>
+            <div><h2>Embedding</h2><p class="core-question">What happens the day you need to change the model?</p></div>
+          </div>
+          <p>An embedding model defines the geometry that similarity search depends on. Two models, even two versions of the same model, do not generally produce vectors that can be compared to each other, which means an upgrade is not an addition, it is a full recomputation of the entire index.</p>
+          <p>I did not appreciate how expensive that fact is until I worked through what a real migration requires. Build the new index in the shadow of the old one, validate it offline before it touches any real traffic, keep both writable during the transition so the new index does not fall behind while the old one is still backfilling, and only then cut traffic over, with a rollback window kept open in case something the offline evaluation missed shows up in production.</p>
+        </section>
+
+        <section class="layer-section" id="indexing" data-layer="indexing">
+          <div class="layer-heading">
+            <div class="layer-number">06</div>
+            <div><h2>Indexing &amp; the vector store</h2><p class="core-question">Where does permission enforcement actually have to live?</p></div>
+          </div>
+          <p>Writing vectors straight into a database from application code looks fine until you need version isolation between an old and new embedding model, a way to retry a failed write without duplicating it, or a soft delete you can actually audit. All of that argues for a dedicated indexing layer rather than a direct write path.</p>
+          <p>The sharper lesson, though, is about access control. Permission filtering has to be part of the vector search query itself, not something applied to results after they come back. The difference matters because what gets filtered out here is not irrelevant content, it is content a user has no right to see, and letting it pass through application memory even briefly before being discarded is a real exposure surface, not a theoretical one.</p>
+        </section>
+
+        <section class="layer-section" id="retrieval" data-layer="retrieval">
+          <div class="layer-heading">
+            <div class="layer-number">07</div>
+            <div><h2>Retrieval &amp; generation</h2><p class="core-question">Which of three failure modes are you actually looking at?</p></div>
+          </div>
+          <p>This is the layer that gets the most attention and the one I found most useful to organize around a simple taxonomy rather than a list of techniques. Every disappointing answer traces back to one of three failures.</p>
+
+          <div class="failure-grid" aria-label="Three RAG failure modes">
+            <div class="failure-card"><strong>Retrieval failure</strong><span>The right content was never found.</span></div>
+            <div class="failure-card"><strong>Augmentation failure</strong><span>The content was found but not used well.</span></div>
+            <div class="failure-card"><strong>Generation failure</strong><span>The model had what it needed and still got it wrong.</span></div>
+          </div>
+
+          <p>Naming which failure you are looking at before reaching for a fix changed how I approached this layer entirely. Query rewriting and hypothetical document embeddings address retrieval failure by closing the gap between how a question is phrased and how the answer is written. Reranking and context reordering address augmentation failure. Grounding constraints, citation requirements, and confidence-gated refusal address generation failure.</p>
+          <p>And for the harder cases—questions that need more than one hop of reasoning, or where retrieval quality itself is unreliable enough that it needs a correction step—static retrieve-then-generate stops being enough and the system needs to decide dynamically whether to retrieve again, or route to a different source entirely.</p>
+        </section>
+
+        <section class="cross-layer" id="evaluation">
+          <div class="callout-label">Across every layer</div>
+          <h2>Reliability &amp; evaluation</h2>
+          <p>A pipeline that runs is not the same as a pipeline that recovers. Idempotent writes, so a retried task does not double up its effects. Explicit partial-failure states, so a half-finished update never gets treated as a finished one. And underneath all of it, evaluation that is specific enough to catch a regression rather than vague enough to always look fine.</p>
+          <p>Recall at k for whether retrieval is working. Faithfulness for whether the generated answer actually stays inside what was retrieved. A small, continuously growing set of real questions with known good answers, mined from real usage rather than written once and left static, has been the single highest-leverage thing I built at this layer, because everything else in the system gets judged against it.</p>
+        </section>
+
+        <section class="layer-section" id="conclusion">
+          <div class="callout-label">What actually stuck</div>
+          <h2 class="conclusion-title">Design for the day after launch.</h2>
+          <p>The layer-by-layer view is useful, but the thing I keep coming back to is smaller than any single layer. Every one of these problems—staleness, structural loss at boundaries, semantic drift between versions, silent security gaps—is a version of the same underlying question: what happens when the world changes after you have already built something on top of it?</p>
+          <p>A system that only works on the day it was built is a demo. A system that keeps working as its inputs, models, and users change is the actual engineering problem, and it is the one worth designing for from the first layer onward.</p>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <section class="article-end" aria-label="Continue browsing">
+    <div class="article-end-inner">
+      <div><h2>Keep following the system.</h2><p>More notes on applied AI, product judgment, and production engineering are coming next.</p></div>
+      <a class="end-link" href="index.html#field-notes"><span aria-hidden="true">←</span> Back to portfolio</a>
+    </div>
+  </section>
+
+  <footer>© 2026 Bonnie Gao · Field Notes</footer>
+
+  <script>
+    const progress = document.querySelector(".reading-progress");
+    const sections = [...document.querySelectorAll("[data-layer]")];
+    const mapLinks = [...document.querySelectorAll(".map-link")];
+
+    function updateProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      progress.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visible) return;
+      mapLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`);
+      });
+    }, { rootMargin: "-24% 0px -64% 0px", threshold: [0.08, 0.2, 0.4] });
+
+    sections.forEach((section) => observer.observe(section));
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+  </script>
+</body>
+</html>
