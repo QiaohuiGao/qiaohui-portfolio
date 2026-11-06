@@ -666,6 +666,10 @@
       gap: 52px;
     }
 
+    .notes-banner + .notes-banner {
+      margin-top: 28px;
+    }
+
     .notes-contours {
       position: absolute;
       z-index: -1;
@@ -1296,6 +1300,24 @@
     <section class="section field-notes" id="field-notes" aria-labelledby="field-notes-title">
       <div class="container">
         <article class="notes-banner">
+          <div class="notes-topline">
+            <div class="notes-label">Field Notes · Product × AI × Engineering</div>
+            <div class="notes-status">Field Note 02 · Read Nov 2, 2026</div>
+          </div>
+          <div class="notes-copy">
+            <h2 class="notes-title" id="field-notes-title">Super-agent in 7 Slides.</h2>
+            <p class="notes-intro">Reading DeepSeek’s design for an agent that stays available: routing events, keeping tasks moving, and recovering state.</p>
+          </div>
+          <div class="notes-footer">
+            <div class="notes-route" aria-label="Super-agent themes">
+              <div class="notes-topic">Architecture<span>Router–Worker coordination and concurrent sessions</span></div>
+              <div class="notes-topic">Interaction<span>Event-driven execution and asynchronous tools</span></div>
+              <div class="notes-topic">Reliability<span>State separation, recovery, and experimental limits</span></div>
+            </div>
+            <a class="notes-link" href="field-notes/deepseek-superagent.html" aria-label="Read Super-agent in 7 Slides">Read field note <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+        <article class="notes-banner">
           <svg class="notes-contours" viewBox="0 0 720 620" fill="none" aria-hidden="true">
             <path d="M750 64C650 20 561 31 503 95c-55 60-57 151-133 183-76 32-184 0-241 64-58 65-9 142-82 211" stroke="currentColor"/>
             <path d="M756 112c-91-40-168-25-212 30-47 59-31 129-105 170-73 41-183 8-231 62-54 61-8 130-79 198" stroke="currentColor"/>
@@ -1310,7 +1332,7 @@
           </div>
 
           <div class="notes-copy">
-            <h2 class="notes-title" id="field-notes-title">Designing a RAG System, Layer by Layer.</h2>
+            <h2 class="notes-title" id="rag-field-note-title">Designing a RAG System, Layer by Layer.</h2>
             <p class="notes-intro">The pipeline behind a production system, and the question worth asking at each layer.</p>
           </div>
 

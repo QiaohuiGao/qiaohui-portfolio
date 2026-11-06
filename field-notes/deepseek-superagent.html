@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Super-agent in 7 Slides | Bonnie Gao</title>
+<meta name="description" content="Seven slides and reading notes on DeepSeek's Super-agent harness: Router–Worker coordination, event-driven execution, asynchronous interaction, state and recovery.">
+<meta name="theme-color" content="#0b151d"><meta property="og:title" content="Super-agent in 7 Slides | Bonnie Gao"><meta property="og:description" content="Designing an agent that stays available: seven slides and personal reading notes on DeepSeek Harness."><meta property="og:type" content="article"><meta property="og:url" content="https://qiaohuigao.github.io/qiaohui-portfolio/field-notes/deepseek-superagent.html"><meta property="og:image" content="https://qiaohuigao.github.io/qiaohui-portfolio/assets/field-notes/superagent/01.png">
+<link rel="canonical" href="https://qiaohuigao.github.io/qiaohui-portfolio/field-notes/deepseek-superagent.html"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650;9..144,750&amp;family=Instrument+Sans:ital,wght@0,400..800;1,400..800&amp;display=swap" rel="stylesheet">
+<style>
+:root{--deep:#0b151d;--paper:#f3ede3;--ink:#16202a;--muted:#68737a;--cream:#fbf7ef;--water:#7db5b1;--stone:#d8c1a1;--line:rgba(22,32,42,.17)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;scroll-padding-top:28px}body{background:var(--paper);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;line-height:1.7}a{color:inherit}img{display:block;max-width:100%;height:auto}:focus-visible{outline:3px solid #2f6fed;outline-offset:5px}h1,h2,h3{font-family:"Fraunces",Georgia,serif}a{text-underline-offset:4px}.skip-link{position:absolute;left:16px;top:-100px;background:var(--cream);padding:12px;z-index:10}.skip-link:focus{top:10px}
+.nav{background:var(--deep);color:var(--cream);border-bottom:1px solid rgba(247,241,230,.14)}.nav-inner{width:min(1180px,calc(100% - 42px));min-height:72px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}.logo{font:750 23px "Fraunces",Georgia,serif;text-decoration:none}.back-link{font-size:13px;font-weight:760;text-decoration:none;color:rgba(247,241,230,.75)}
+.hero{padding:88px 0 78px;background:linear-gradient(135deg,#0b151d,#142630);color:var(--cream)}.hero-inner{width:min(980px,calc(100% - 42px));margin:auto}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--stone);margin-bottom:26px}h1{max-width:940px;font-size:clamp(48px,7vw,88px);font-weight:650;line-height:1.02;letter-spacing:-.025em}.deck{max-width:760px;margin-top:28px;color:rgba(247,241,230,.77);font-size:clamp(20px,2.4vw,26px);line-height:1.5}.byline{margin-top:38px;padding-top:20px;border-top:1px solid rgba(247,241,230,.18);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:rgba(247,241,230,.62);font-size:13px}.byline span{display:block}
+.article-layout{width:min(1180px,calc(100% - 42px));margin:0 auto;padding:76px 0 100px;display:grid;grid-template-columns:210px minmax(0,780px);gap:70px;align-items:start}.contents{position:sticky;top:28px}.contents h2{font-family:inherit;text-transform:uppercase;letter-spacing:.15em;font-size:11px;color:var(--muted);margin-bottom:18px}.contents ol{list-style:none}.contents a{display:flex;align-items:center;gap:12px;padding:11px 0;font-size:13px;text-decoration:none;color:var(--muted)}.contents a:hover{color:var(--ink)}.contents a span{font-size:11px;font-weight:800;color:#397c78}.article-body{min-width:0}.opening{font:500 clamp(23px,2.5vw,30px)/1.5 "Fraunces",Georgia,serif}.article-body>p{margin-bottom:24px}.source-links{display:flex;flex-wrap:wrap;gap:12px 26px;margin:28px 0 36px;font-size:14px;font-weight:750}.evidence-note{padding:22px 24px;border-left:3px solid #397c78;background:#e7e6db;font-size:16px;line-height:1.75}.evidence-note strong{display:block;margin-bottom:6px}.slide-section{margin-top:60px;padding-top:26px;border-top:1px solid var(--line)}.slide-heading{display:flex;align-items:center;gap:16px;margin-bottom:24px}.slide-number{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:50%;background:var(--deep);color:var(--cream);font-size:12px;font-weight:800}.slide-heading h2{font-size:clamp(29px,3.5vw,42px);line-height:1.15;font-weight:650}figure{margin:0}.slide-image{display:block;box-shadow:0 12px 38px rgba(8,16,24,.12)}.slide-image img{width:100%;height:auto;aspect-ratio:3/4}figcaption{font-size:12px;color:var(--muted);margin-top:10px}.reading-note{margin:26px 0 22px}.reading-note h3{font:800 11px "Instrument Sans",system-ui,sans-serif;color:#397c78;text-transform:uppercase;letter-spacing:.14em;margin-bottom:9px}.reading-note p{font-size:18px;line-height:1.8}.transcript{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}summary{cursor:pointer;padding:16px 0;font-size:14px;font-weight:750}.transcript-content{padding:8px 0 24px;font-size:17px;overflow-wrap:anywhere}.transcript-content p{margin:16px 0}.transcript-content ul,.transcript-content ol{padding-left:24px;margin:16px 0}.transcript-content li{margin:8px 0}.transcript-table{overflow-x:auto;margin:18px 0}table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:#e7ddce}code{font-size:.9em}.article-end{background:#14232d;color:var(--cream);padding:58px 21px;text-align:center}.article-end h2{font-size:clamp(30px,4vw,48px);line-height:1.15;margin-bottom:20px}.article-end a{color:var(--water);font-weight:750}footer{padding:26px 21px;background:var(--deep);color:rgba(247,241,230,.52);text-align:center;font-size:12px}
+@media(max-width:900px){.article-layout{grid-template-columns:1fr;gap:32px;max-width:780px}.contents{position:static;border-bottom:1px solid var(--line);padding-bottom:20px}.contents ol{display:flex;flex-wrap:wrap;gap:0 22px}.contents a{padding:6px 0}.hero{padding-top:64px}}@media(max-width:640px){.nav-inner,.hero-inner,.article-layout{width:calc(100% - 32px)}.nav-inner{min-height:66px}.logo{font-size:20px}.hero{padding:54px 0 48px}h1{font-size:clamp(44px,12vw,64px)}.eyebrow{font-size:10px}.byline{flex-direction:column;gap:10px}.article-layout{padding-top:34px}.slide-section{margin-top:42px}.source-links{flex-direction:column;gap:14px}.reading-note p{font-size:17px}.evidence-note{padding:18px}.slide-heading{gap:12px}.slide-heading h2{font-size:29px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body>
+<a class="skip-link" href="#article">Skip to article</a>
+<nav class="nav" aria-label="Main navigation"><div class="nav-inner"><a class="logo" href="../index.html">Bonnie Gao.</a><a class="back-link" href="../index.html#field-notes">← Back to Field Notes</a></div></nav>
+<header class="hero"><div class="hero-inner"><p class="eyebrow">Field Note 02 · Agent Systems · Seven Slides</p><h1>Super-agent in 7 Slides</h1><p class="deck">Designing an agent that stays available.</p><div class="byline"><div>Reading notes by Bonnie Gao<span>Source: DeepSeek Harness team</span></div><div>Read <time datetime="2026-11-02">November 2, 2026</time><span>Published <time datetime="2026-11-06">November 6, 2026</time></span></div></div></div></header>
+<main class="article-layout" id="article"><aside class="contents" aria-label="On this page"><h2>Inside this note</h2><ol><li><a href="#slide-01"><span>01</span>Cover</a></li><li><a href="#slide-02"><span>02</span>Requirements</a></li><li><a href="#slide-03"><span>03</span>Router–Worker</a></li><li><a href="#slide-04"><span>04</span>Event-driven execution</a></li><li><a href="#slide-05"><span>05</span>Async interaction</a></li><li><a href="#slide-06"><span>06</span>State and recovery</a></li><li><a href="#slide-07"><span>07</span>Results and takeaway</a></li></ol></aside><article class="article-body" aria-label="Super-agent slides and reading notes">
+<p class="opening">What happens when an agent is already working and a new event arrives? DeepSeek’s Super-agent separates event routing, task execution, and recovery.</p>
+<p>The simulated experiment makes one trade-off concrete. Compared with a single-session setup with access to a subagent tool under a neutral prompt, Super-agent reduced p95 completion time from 29.5 to 15.7 minutes while using more tokens.</p>
+<div class="source-links"><a href="https://mp.weixin.qq.com/s/zoS7GlReWPhfCjENGxXCdg" target="_blank" rel="noopener">Read the original DeepSeek article ↗</a><a href="../assets/field-notes/superagent/slides.en.pptx" download>Download the English slides (.pptx)</a></div>
+<div class="evidence-note"><strong>Reading the experiment</strong>The single-session baseline had a subagent tool available but did not delegate in any of five runs under a neutral prompt. The evaluation used synthetic events and simulated tools. These results describe that workload; they do not establish real-world task quality or long-term reliability.</div>
+<section class="slide-section" id="slide-01" aria-labelledby="title-01">
+      <div class="slide-heading"><span class="slide-number">01</span><h2 id="title-01">Cover</h2></div>
+      <figure><a class="slide-image" href="../assets/field-notes/superagent/01.png" target="_blank" rel="noopener" aria-label="Open slide 01: Cover at full resolution"><img src="../assets/field-notes/superagent/01.png" width="1080" height="1440" alt="Slide 01: Cover" loading="lazy" decoding="async"></a><figcaption>Slide 01 of 7. Open the image for the full-resolution view.</figcaption></figure>
+      <div class="reading-note"><h3>My reading note</h3><p>I read this as a design for keeping work moving across interruptions. What can the system handle before a human needs to step in?</p></div>
+      <details class="transcript"><summary>Read slide 01 as text</summary><div class="transcript-content"><p>Super-agent: Toward More Autonomous Agent Systems</p>
+<p>From single-task ReAct loops to persistent, concurrent, proactive agent systems.</p>
+<p>Core Question: As models become increasingly capable of completing complex tasks, how can harness architecture overcome the limitations of multi-task coordination and execution?</p></div></details>
+    </section><section class="slide-section" id="slide-02" aria-labelledby="title-02">
+      <div class="slide-heading"><span class="slide-number">02</span><h2 id="title-02">Requirements</h2></div>
+      <figure><a class="slide-image" href="../assets/field-notes/superagent/02.png" target="_blank" rel="noopener" aria-label="Open slide 02: Why Do We Need Super-agent? at full resolution"><img src="../assets/field-notes/superagent/02.png" width="1080" height="1440" alt="Slide 02: Why Do We Need Super-agent?" loading="lazy" decoding="async"></a><figcaption>Slide 02 of 7. Open the image for the full-resolution view.</figcaption></figure>
+      <div class="reading-note"><h3>My reading note</h3><p>A new message should reach the agent quickly, while the work already in progress should keep its context. Those two goals can pull in different directions.</p></div>
+      <details class="transcript"><summary>Read slide 02 as text</summary><div class="transcript-content"><p>A single ReAct loop cannot satisfy four essential requirements simultaneously.</p>
+<div class="transcript-table"><table><thead><tr><th scope="col">Requirement</th><th scope="col">Capability</th></tr></thead><tbody><tr><td>Continuity</td><td>Preserve context across sessions and channels</td></tr><tr><td>Efficiency</td><td>Respond quickly and execute tasks concurrently</td></tr><tr><td>Proactivity</td><td>Observe environmental events and act autonomously</td></tr><tr><td>Persistence</td><td>Remain operational and recover from failures</td></tr></tbody></table></div>
+<p>Traditional agents depend on independent sessions, leading to blocking execution, fragmented context, and device-dependent lifecycles.</p>
+<p>Super-agent introduces five architectural modules:</p>
+<ol><li>Two-layer Architecture: Separate global coordination from concurrent execution.</li><li>Event-driven System: Enable proactive actions through environmental triggers.</li><li>Human-facing Interaction: Support asynchronous execution and channel-aware communication.</li><li>Compute–State–Environment Separation: Enable persistent operation across devices.</li><li>Watchdog: Monitor task progress and recover from failures.</li></ol>
+<p>Key Insight: Super-agent is a systems-level redesign of the agent harness—not simply a ReAct loop with more tools.</p></div></details>
+    </section><section class="slide-section" id="slide-03" aria-labelledby="title-03">
+      <div class="slide-heading"><span class="slide-number">03</span><h2 id="title-03">Router–Worker</h2></div>
+      <figure><a class="slide-image" href="../assets/field-notes/superagent/03.png" target="_blank" rel="noopener" aria-label="Open slide 03: Router–Worker: Decoupling Coordination from Execution at full resolution"><img src="../assets/field-notes/superagent/03.png" width="1080" height="1440" alt="Slide 03: Router–Worker: Decoupling Coordination from Execution" loading="lazy" decoding="async"></a><figcaption>Slide 03 of 7. Open the image for the full-resolution view.</figcaption></figure>
+      <div class="reading-note"><h3>My reading note</h3><p>I’d keep the router’s decision small. Does this event belong to ongoing work, or should it start a separate session? The worker can then focus on execution.</p></div>
+      <details class="transcript"><summary>Read slide 03 as text</summary><div class="transcript-content"><p>How can an agent preserve global context while achieving high multi-task throughput?</p>
+<p>A single session maintains continuity but becomes blocked by long-running tasks. Fully independent sessions support concurrency but fragment context.</p>
+<p>Super-agent introduces a Router–Worker architecture:</p>
+<p>User Requests / Environment Triggers</p>
+<p>Global Router</p>
+<p>Global Context · Task Dispatch · Batching</p>
+<p>Worker A</p>
+<p>Isolated Session</p>
+<p>Worker B</p>
+<p>Isolated Session</p>
+<p>Worker C</p>
+<p>Isolated Session</p>
+<p>Two key design decisions:</p>
+<ul><li>Coordination–Execution Decoupling: The Router maintains global continuity and dispatches tasks. Workers execute tasks in isolated sessions, avoiding execution blocking and context interference.</li><li>Trigger Batching: Events arriving during Router inference are queued and combined into the next model call, improving effective throughput under higher event arrival rates.</li></ul>
+<p>Key Insight: A session becomes an internal execution resource managed by the harness rather than a user-facing interaction boundary.</p></div></details>
+    </section><section class="slide-section" id="slide-04" aria-labelledby="title-04">
+      <div class="slide-heading"><span class="slide-number">04</span><h2 id="title-04">Event-driven execution</h2></div>
+      <figure><a class="slide-image" href="../assets/field-notes/superagent/04.png" target="_blank" rel="noopener" aria-label="Open slide 04: Event-driven: From Reactive to Proactive at full resolution"><img src="../assets/field-notes/superagent/04.png" width="1080" height="1440" alt="Slide 04: Event-driven: From Reactive to Proactive" loading="lazy" decoding="async"></a><figcaption>Slide 04 of 7. Open the image for the full-resolution view.</figcaption></figure>
+      <div class="reading-note"><h3>My reading note</h3><p>Thread subscriptions were the most interesting detail for me. Once a worker owns a thread, relevant follow-ups can reach it directly, saving repeated routing decisions.</p></div>
+      <details class="transcript"><summary>Read slide 04 as text</summary><div class="transcript-content"><p>How can an agent identify actionable tasks from continuous environmental events?</p>
+<p>Instead of waiting for user prompts, Super-agent processes Triggers from chat, GitHub, email, CI systems, and other workplace sources.</p>
+<p>Four mechanisms address the Trigger lifecycle:</p>
+<div class="transcript-table"><table><thead><tr><th scope="col">Stage</th><th scope="col">Mechanism</th><th scope="col">Purpose</th></tr></thead><tbody><tr><td>01 Event Filtering</td><td>Fast/Slow Path</td><td>Eliminate irrelevant event noise</td></tr><tr><td>02 Event Routing</td><td>Thread Subscription</td><td>Deliver events to the appropriate Worker</td></tr><tr><td>03 Context Organization</td><td>Inline &amp; Spill, Chain of Recall</td><td>Load and recover relevant context on demand</td></tr><tr><td>04 Proactive Actions</td><td>Speculative Execution</td><td>Prepare useful results in the background</td></tr></tbody></table></div>
+<p>How it works</p>
+<p>Filtering begins with deterministic rules, invoking an LLM only when semantic judgment is necessary. Thread subscriptions allow related events to reach their Workers directly, bypassing repeated Router decisions.</p>
+<p>Context follows locality-based loading: likely relevant information is inlined, while additional history remains accessible through references. Speculative execution allows the agent to act before a user explicitly confirms every step.</p>
+<p>Key Insight: The goal is not to let LLMs process every event. It is to combine deterministic programming with selective model reasoning.</p></div></details>
+    </section><section class="slide-section" id="slide-05" aria-labelledby="title-05">
+      <div class="slide-heading"><span class="slide-number">05</span><h2 id="title-05">Async interaction</h2></div>
+      <figure><a class="slide-image" href="../assets/field-notes/superagent/05.png" target="_blank" rel="noopener" aria-label="Open slide 05: Human-facing Interaction: Non-blocking Communication at full resolution"><img src="../assets/field-notes/superagent/05.png" width="1080" height="1440" alt="Slide 05: Human-facing Interaction: Non-blocking Communication" loading="lazy" decoding="async"></a><figcaption>Slide 05 of 7. Open the image for the full-resolution view.</figcaption></figure>
+      <div class="reading-note"><h3>My reading note</h3><p>I’d measure how quickly the system acknowledges an event and how quickly it finishes the work. Users experience those delays differently.</p></div>
+      <details class="transcript"><summary>Read slide 05 as text</summary><div class="transcript-content"><p>How can an agent remain responsive while executing long-running tasks?</p>
+<p>The two-layer architecture preserves global context, but seamless interaction requires two additional mechanisms.</p>
+<p>01 · Asynchronous ReAct</p>
+<p>Traditional ReAct loops block while waiting for synchronous tool execution.</p>
+<p>Super-agent introduces asynchronous <code>start()</code> / <code>stop()</code>:</p>
+<ul><li><code>start()</code> immediately acknowledges task initiation.</li><li>Tools continue running in the background while the agent processes new messages.</li><li>Completed tasks return results as new session events.</li></ul>
+<p>02 · Multi-channel Communication</p>
+<p>Different communication channels require different response formats.</p>
+<ul><li>Instant messaging: concise, low-disruption updates focused on decisions and important results.</li><li>GitHub, email, documents: structured, information-rich asynchronous deliverables.</li></ul>
+<p>Key Insight: Router–Worker preserves context continuity, asynchronous ReAct enables responsiveness, and channel-aware communication creates a natural interaction experience.</p></div></details>
+    </section><section class="slide-section" id="slide-06" aria-labelledby="title-06">
+      <div class="slide-heading"><span class="slide-number">06</span><h2 id="title-06">State and recovery</h2></div>
+      <figure><a class="slide-image" href="../assets/field-notes/superagent/06.png" target="_blank" rel="noopener" aria-label="Open slide 06: Persistence: Decoupling Compute, State, and Environment at full resolution"><img src="../assets/field-notes/superagent/06.png" width="1080" height="1440" alt="Slide 06: Persistence: Decoupling Compute, State, and Environment" loading="lazy" decoding="async"></a><figcaption>Slide 06 of 7. Open the image for the full-resolution view.</figcaption></figure>
+      <div class="reading-note"><h3>My reading note</h3><p>I’d interrupt a worker after it starts work and check whether the system can tell what was completed and what needs to resume.</p></div>
+      <details class="transcript"><summary>Read slide 06 as text</summary><div class="transcript-content"><p>How can an agent operate beyond a single process or device?</p>
+<p>Traditional local agents tightly couple computation, session state, and execution environments. Device downtime or process failures interrupt their work.</p>
+<p>Super-agent addresses this through two layers of separation.</p>
+<p>01 · Compute–State Separation</p>
+<p>Run the Agent Loop as stateless cloud compute while persisting session and execution state in external storage.</p>
+<p>02 · Compute–Environment Separation</p>
+<p>Keep stateful resources—repositories, dependencies, credentials, and local tools—in their original environments. A lightweight Daemon allows the cloud Agent Loop to access them remotely.</p>
+<p>03 · Independent Watchdog</p>
+<p>Process liveness does not guarantee useful task progress. An external Watchdog periodically checks infrastructure health and execution progress, detects failures or stalled work, and attempts recovery.</p>
+<p>Cloud Agent Loop</p>
+<p>Stateless Compute · Elastic Execution</p>
+<p>State Storage</p>
+<p>Durable Session State</p>
+<p>Local Daemon</p>
+<p>Remote Tool Execution</p>
+<p>External Watchdog</p>
+<p>Health Monitoring · Progress Checks · Recovery</p>
+<p>Key Insight: Persistence is not about keeping a single process alive indefinitely. It is about recoverable state, reconnectable execution environments, and reliable task continuation.</p></div></details>
+    </section><section class="slide-section" id="slide-07" aria-labelledby="title-07">
+      <div class="slide-heading"><span class="slide-number">07</span><h2 id="title-07">Results and takeaway</h2></div>
+      <figure><a class="slide-image" href="../assets/field-notes/superagent/07.png" target="_blank" rel="noopener" aria-label="Open slide 07: Experimental Findings, Limitations &amp; My Takeaways at full resolution"><img src="../assets/field-notes/superagent/07.png" width="1080" height="1440" alt="Slide 07: Experimental Findings, Limitations &amp; My Takeaways" loading="lazy" decoding="async"></a><figcaption>Slide 07 of 7. Open the image for the full-resolution view.</figcaption></figure>
+      <div class="reading-note"><h3>My reading note</h3><p>I’d want to see how much of the latency gain holds up when the single-session baseline delegates consistently and the workload uses real tools.</p></div>
+      <details class="transcript"><summary>Read slide 07 as text</summary><div class="transcript-content"><p>Super-agent trades additional coordination and token overhead for more predictable multi-task execution.</p>
+<p>Super-agent · p95</p>
+<p><strong>15.7 min</strong></p>
+<p>Single-session Baseline · p95</p>
+<p><strong>29.5 min</strong></p>
+<p>Key Findings</p>
+<ul><li>The two-layer architecture achieves more predictable task completion with lower tail latency.</li><li>Removing Thread-based direct routing increases Router decisions by approximately 30% and cached input token consumption by approximately 37%.</li><li>Maintaining multiple sessions increases token overhead, trading compute resources for concurrency and responsiveness.</li></ul>
+<p>Limitations</p>
+<p>This is an applied systems architecture exploration rather than a novel agent algorithm or theoretical breakthrough. Its evaluation relies on synthetic workloads, simulated tool execution, and a limited number of trials. Real-world task quality, long-term reliability, and large-scale deployment remain insufficiently validated.</p>
+<p>My Takeaways</p>
+<p>The most valuable insight is how established systems engineering practices can be adapted to agent harnesses.</p>
+<p>Scheduling, Fast/Slow Paths, caching and selective retrieval, asynchronous execution, state decoupling, and feedback control are not new theories. Yet their systematic application can meaningfully improve agent reliability and operational efficiency.</p>
+<p>Model capability determines what an agent can do. Harness architecture determines whether it can do so reliably, persistently, and at scale.</p></div></details>
+    </section>
+</article></main><section class="article-end" aria-label="Continue reading"><h2>More notes from building AI systems.</h2><a href="../index.html#field-notes">Back to Field Notes →</a></section><footer>© 2026 Bonnie Gao. Product × AI × Engineering.</footer>
+</body></html>
