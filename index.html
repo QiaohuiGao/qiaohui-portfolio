@@ -3,30 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Bonnie Gao is an AI Builder focused on healthcare AI, RAG agents, medical imaging ML, and production-grade intelligent systems." />
-  <meta name="theme-color" content="#101a22" />
-  <meta property="og:title" content="Bonnie Gao | AI Builder" />
-  <meta property="og:description" content="Healthcare AI, intelligent systems, and production-grade ML from research to real-world adoption." />
+  <meta name="description" content="Bonnie Gao's field notes and selected work across AI, healthcare, product, and production engineering." />
+  <meta name="theme-color" content="#13232a" />
+  <meta property="og:title" content="Bonnie Gao | Field Notes & Work" />
+  <meta property="og:description" content="Notes and selected work across applied AI, product judgment, and production engineering." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/hero-canyon.jpg" />
-  <title>Bonnie Gao | AI Builder</title>
+  <meta property="og:image" content="assets/mountain-river-background.jpg" />
+  <title>Bonnie Gao | Field Notes &amp; Work</title>
+  <script>
+    window.__initialHash = location.hash;
+    if (window.__initialHash) history.replaceState(null, "", location.pathname + location.search);
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650;9..144,750&family=Instrument+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,620;9..144,720&family=Instrument+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #101820;
-      --bg-soft: #15242d;
-      --ink: #f7f1e6;
-      --muted: #b8c2c8;
-      --line: rgba(247, 241, 230, 0.18);
-      --stone: #d8c1a1;
-      --canyon: #b96c4d;
-      --water: #7db5b1;
-      --blue: #bdd9e9;
-      --deep: #081018;
-      --max: 1180px;
-      --nav-height: 74px;
+      --sidebar: #13232a;
+      --sidebar-soft: #1b3037;
+      --canvas: #dfe5e2;
+      --paper: #f8f7f2;
+      --paper-cool: #edf2ef;
+      --ink: #17242a;
+      --muted: #66757a;
+      --line: rgba(23, 36, 42, 0.14);
+      --water: #8dc8b7;
+      --water-dark: #387a6e;
+      --clay: #bd7658;
+      --cream: #f4efe6;
+      --sidebar-width: 210px;
+      --radius-a: 24px 9px 24px 9px;
+      --radius-b: 9px 24px 9px 24px;
+      --max: 1120px;
     }
 
     * {
@@ -37,23 +45,30 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: calc(var(--nav-height) + 24px);
     }
 
     body {
-      font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
+      height: 100vh;
+      overflow: hidden;
+      background: var(--canvas);
       color: var(--ink);
+      font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
       line-height: 1.55;
     }
 
-    body.nav-open {
+    body.menu-open {
       overflow: hidden;
     }
 
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
     }
 
     button,
@@ -65,983 +80,1232 @@
       color: inherit;
     }
 
-    img {
-      display: block;
-      max-width: 100%;
-    }
-
     :focus-visible {
       outline: 2px solid var(--water);
       outline-offset: 4px;
     }
 
-    .page {
-      --hero-img: url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2200&q=90");
-      --canyon-img: url("assets/canyon-wide.jpg");
-      --portrait-img: url("assets/hero-canyon.jpg");
-      --climb-img: url("assets/climbing-water.jpg");
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 15% 5%, rgba(125, 181, 177, 0.18), transparent 28rem),
-        linear-gradient(180deg, #101820 0%, #13222b 42%, #0d151d 100%);
-    }
-
-    .container {
-      width: min(var(--max), calc(100% - 42px));
-      margin: 0 auto;
-    }
-
-    .nav {
+    .sidebar {
       position: fixed;
-      z-index: 50;
-      top: 0;
-      left: 0;
-      right: 0;
-      min-height: var(--nav-height);
+      z-index: 40;
+      inset: 0 auto 0 0;
+      width: var(--sidebar-width);
+      padding: 30px 27px 25px;
       display: flex;
-      align-items: center;
-      background: rgba(8, 16, 24, 0.78);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(247, 241, 230, 0.12);
+      flex-direction: column;
+      color: var(--cream);
+      background:
+        linear-gradient(180deg, rgba(19, 35, 42, 0.92), rgba(19, 35, 42, 0.98)),
+        url("assets/canyon-wide.jpg") center / cover;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .nav-inner {
-      width: min(var(--max), calc(100% - 42px));
-      margin: 0 auto;
-      display: flex;
+    .identity {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 13px;
       align-items: center;
-      justify-content: space-between;
-      gap: 24px;
     }
 
-    .logo {
+    .identity-photo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 45%;
+      border: 1px solid rgba(244, 239, 230, 0.35);
+    }
+
+    .identity-name {
+      display: block;
       font-family: "Fraunces", Georgia, serif;
-      font-size: 24px;
-      font-weight: 750;
-      letter-spacing: 0;
-      white-space: nowrap;
+      font-size: 20px;
+      font-weight: 620;
+      line-height: 1.1;
     }
 
-    .nav-links {
+    .identity-role {
+      display: block;
+      margin-top: 4px;
+      color: rgba(244, 239, 230, 0.6);
+      font-size: 11px;
+    }
+
+    .availability {
       display: flex;
       align-items: center;
-      gap: 28px;
-      font-size: 13px;
+      gap: 8px;
+      margin-top: 25px;
+      padding: 10px 11px;
+      border: 1px solid rgba(141, 200, 183, 0.2);
+      border-radius: 9px;
+      background: rgba(141, 200, 183, 0.08);
+      color: rgba(244, 239, 230, 0.72);
+      font-size: 11px;
+    }
+
+    .availability-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--water);
+      box-shadow: 0 0 0 4px rgba(141, 200, 183, 0.1);
+    }
+
+    .nav-caption {
+      margin: 34px 0 14px;
+      color: rgba(244, 239, 230, 0.42);
+      font-size: 10px;
       font-weight: 760;
     }
 
-    .nav-links a {
+    .side-nav {
       position: relative;
-      opacity: 0.78;
-      transition: opacity 180ms ease;
+      list-style: none;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      opacity: 1;
-    }
-
-    .nav-links a.active::after,
-    .nav-links a:hover::after {
+    .side-nav::before {
       content: "";
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -9px;
-      height: 1px;
-      background: currentColor;
+      top: 13px;
+      bottom: 13px;
+      left: 5px;
+      width: 1px;
+      background: rgba(244, 239, 230, 0.14);
     }
 
-    .menu-toggle {
-      display: none;
-      width: 44px;
-      height: 44px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.06);
-      cursor: pointer;
-      place-items: center;
-    }
-
-    .menu-toggle span,
-    .menu-toggle span::before,
-    .menu-toggle span::after {
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: var(--ink);
-      transition: transform 180ms ease, opacity 180ms ease;
-    }
-
-    .menu-toggle span {
+    .side-nav a {
       position: relative;
-    }
-
-    .menu-toggle span::before,
-    .menu-toggle span::after {
-      content: "";
-      position: absolute;
-      left: 0;
-    }
-
-    .menu-toggle span::before {
-      top: -6px;
-    }
-
-    .menu-toggle span::after {
-      top: 6px;
-    }
-
-    .nav-open .menu-toggle span {
-      background: transparent;
-    }
-
-    .nav-open .menu-toggle span::before {
-      transform: translateY(6px) rotate(45deg);
-    }
-
-    .nav-open .menu-toggle span::after {
-      transform: translateY(-6px) rotate(-45deg);
-    }
-
-    .section {
-      position: relative;
-      padding: 112px 0;
-    }
-
-    .hero {
-      min-height: 860px;
-      padding-top: 150px;
+      min-height: 38px;
+      padding: 9px 0 9px 25px;
       display: flex;
       align-items: center;
-      background-image:
-        linear-gradient(90deg, rgba(7, 14, 21, 0.82) 0%, rgba(16, 30, 39, 0.68) 46%, rgba(16, 24, 32, 0.24) 100%),
-        var(--hero-img);
-      background-size: cover;
-      background-position: center 58%;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(244, 239, 230, 0.54);
+      font-size: 12px;
+      transition: color 160ms ease;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 0.94fr) minmax(300px, 0.58fr);
-      gap: 76px;
-      align-items: end;
+    .side-nav a::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      left: 1px;
+      width: 9px;
+      height: 9px;
+      border: 1px solid rgba(244, 239, 230, 0.28);
+      border-radius: 50%;
+      background: var(--sidebar);
+      transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
     }
 
-    .kicker {
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 830;
-      letter-spacing: 0.18em;
-      margin-bottom: 16px;
-      text-transform: uppercase;
+    .side-nav a span {
+      color: rgba(244, 239, 230, 0.28);
+      font-size: 10px;
+    }
+
+    .side-nav a:hover,
+    .side-nav a.active {
+      color: var(--cream);
+    }
+
+    .side-nav a.active::before {
+      border-color: var(--water);
+      background: var(--water);
+      transform: scale(1.12);
+    }
+
+    .side-nav a.active span {
+      color: var(--water);
+    }
+
+    .sidebar-foot {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid rgba(244, 239, 230, 0.12);
+    }
+
+    .sidebar-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px 14px;
+      color: rgba(244, 239, 230, 0.62);
+      font-size: 11px;
+    }
+
+    .sidebar-links a:hover {
+      color: var(--cream);
+    }
+
+    .sidebar-copy {
+      margin-top: 14px;
+      color: rgba(244, 239, 230, 0.28);
+      font-size: 9px;
+    }
+
+    .mobile-bar {
+      display: none;
+    }
+
+    .stream {
+      position: relative;
+      height: 100vh;
+      margin-left: var(--sidebar-width);
+      padding: 22px 22px 60px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
+      scrollbar-color: rgba(23, 36, 42, 0.28) transparent;
+      scrollbar-width: thin;
+      background:
+        linear-gradient(rgba(255,255,255,0.16) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.16) 1px, transparent 1px),
+        var(--canvas);
+      background-size: 32px 32px;
+    }
+
+    .stream::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .stream::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: 99px;
+      background: rgba(23, 36, 42, 0.25);
+      background-clip: padding-box;
+    }
+
+    .log-card {
+      position: relative;
+      width: min(100%, var(--max));
+      min-height: calc(100vh - 44px);
+      margin: 0 auto 22px;
+      padding: clamp(34px, 5vw, 68px);
+      overflow: hidden;
+      scroll-snap-align: start;
+      scroll-margin-top: 22px;
+      border: 1px solid rgba(23, 36, 42, 0.1);
+      border-radius: var(--radius-a);
+      background: var(--paper);
+      box-shadow: 0 12px 36px rgba(23, 36, 42, 0.08);
+    }
+
+    .log-card:nth-of-type(even) {
+      border-radius: var(--radius-b);
+    }
+
+    .log-index {
+      position: absolute;
+      top: 24px;
+      right: 27px;
+      color: rgba(23, 36, 42, 0.36);
+      font-size: 10px;
+      font-weight: 720;
+    }
+
+    .section-label {
+      margin-bottom: 14px;
+      color: var(--water-dark);
+      font-size: 11px;
+      font-weight: 760;
     }
 
     h1,
     h2,
     h3 {
       font-family: "Fraunces", Georgia, serif;
-      font-weight: 650;
-      letter-spacing: 0;
+      font-weight: 620;
+      letter-spacing: -0.015em;
     }
 
     h1 {
-      max-width: 860px;
-      font-size: clamp(58px, 8vw, 108px);
-      line-height: 0.96;
-      margin-bottom: 26px;
-      overflow-wrap: anywhere;
-    }
-
-    .subtitle {
-      max-width: 760px;
-      color: rgba(247, 241, 230, 0.95);
-      font-size: clamp(23px, 2.5vw, 34px);
-      line-height: 1.15;
-      margin-bottom: 24px;
-    }
-
-    .lede {
-      max-width: 650px;
-      color: rgba(247, 241, 230, 0.82);
-      font-size: 18px;
-      margin-bottom: 22px;
-    }
-
-    .hero-actions,
-    .social-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .hero-actions {
-      margin-top: 34px;
-    }
-
-    .btn,
-    .icon-btn {
-      min-height: 46px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(247, 241, 230, 0.24);
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--ink);
-      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
-    }
-
-    .btn {
-      gap: 10px;
-      padding: 0 20px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 820;
-    }
-
-    .btn.primary {
-      background: var(--ink);
-      color: var(--deep);
-      border-color: var(--ink);
-    }
-
-    .btn:hover,
-    .icon-btn:hover,
-    .project-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn:hover,
-    .icon-btn:hover {
-      background: rgba(125, 181, 177, 0.18);
-      border-color: rgba(125, 181, 177, 0.62);
-    }
-
-    .btn.primary:hover {
-      background: var(--blue);
-      border-color: var(--blue);
-    }
-
-    .icon-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-    }
-
-    .icon-btn svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
-
-    .profile-card {
-      align-self: stretch;
-      padding: 28px;
-      border: 1px solid var(--line);
-      background: rgba(8, 16, 24, 0.42);
-      backdrop-filter: blur(14px);
-      display: grid;
-      align-content: end;
-      gap: 18px;
-    }
-
-    .profile-photo {
-      min-height: 340px;
-      background-image:
-        linear-gradient(180deg, rgba(8, 16, 24, 0.1), rgba(8, 16, 24, 0.35)),
-        var(--portrait-img);
-      background-size: cover;
-      background-position: center 58%;
-      border: 1px solid rgba(247, 241, 230, 0.12);
-    }
-
-    .profile-meta {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      margin-top: 72px;
-    }
-
-    .stat {
-      padding: 24px 24px 26px 0;
-      border-right: 1px solid var(--line);
-    }
-
-    .stat:last-child {
-      border-right: 0;
-    }
-
-    .stat strong {
-      display: block;
-      color: var(--stone);
-      font-family: "Fraunces", Georgia, serif;
-      font-size: clamp(30px, 4vw, 48px);
-      line-height: 1;
-      font-weight: 650;
-      margin-bottom: 9px;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 760;
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 0.85fr) minmax(320px, 0.72fr);
-      gap: 64px;
-      align-items: end;
-      margin-bottom: 54px;
+      max-width: 700px;
+      font-size: clamp(46px, 6vw, 78px);
+      line-height: 0.98;
     }
 
     .section-title {
-      font-size: clamp(42px, 5vw, 74px);
-      line-height: 1.02;
-      margin-bottom: 0;
+      max-width: 740px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.05;
     }
 
-    .about {
-      background:
-        linear-gradient(180deg, rgba(16, 24, 32, 0.94), rgba(20, 36, 45, 0.9)),
-        var(--canyon-img);
-      background-size: cover;
-      background-position: center;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.72fr);
-      gap: 74px;
-      align-items: start;
-    }
-
-    .about-copy {
-      display: grid;
-      gap: 20px;
-      color: rgba(247, 241, 230, 0.82);
-      font-size: 18px;
-    }
-
-    .facts {
-      display: grid;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .fact {
-      display: grid;
-      grid-template-columns: 150px 1fr;
-      gap: 24px;
-      padding: 22px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .fact:last-child {
-      border-bottom: 0;
-    }
-
-    .fact-label {
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 830;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .fact-value {
-      color: rgba(247, 241, 230, 0.9);
-      font-weight: 760;
-    }
-
-    .experience {
-      background: linear-gradient(180deg, #101820 0%, #172732 100%);
-    }
-
-    .timeline {
-      border-top: 1px solid var(--line);
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 190px minmax(0, 1fr);
-      gap: 42px;
-      padding: 34px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .time {
+    .section-intro {
+      max-width: 620px;
+      margin-top: 16px;
       color: var(--muted);
-      font-size: 13px;
-      font-weight: 780;
-    }
-
-    .role {
-      font-size: 27px;
-      line-height: 1.08;
-      margin-bottom: 6px;
-    }
-
-    .org {
-      color: var(--blue);
       font-size: 14px;
-      font-weight: 780;
-      margin-bottom: 12px;
     }
 
-    .timeline-item p {
-      max-width: 850px;
-      color: rgba(247, 241, 230, 0.76);
-    }
-
-    .project-section {
-      background-image:
-        linear-gradient(180deg, rgba(8, 16, 24, 0.78), rgba(16, 24, 32, 0.9)),
-        var(--hero-img);
-      background-size: cover;
-      background-position: center 50%;
-      background-attachment: fixed;
-    }
-
-    .project-grid {
+    .intro-card {
+      min-height: min(640px, calc(100vh - 44px));
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.72fr);
+      gap: 50px;
+      align-items: center;
+      color: var(--cream);
+      border-color: rgba(255, 255, 255, 0.1);
+      background:
+        linear-gradient(90deg, rgba(11, 24, 30, 0.97) 0%, rgba(16, 35, 42, 0.9) 55%, rgba(16, 35, 42, 0.56) 100%),
+        url("assets/hero-canyon.jpg") center / cover;
     }
 
-    .project-card {
-      border: 1px solid var(--line);
-      background: rgba(8, 16, 24, 0.62);
-      backdrop-filter: blur(16px);
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    .intro-card .log-index {
+      color: rgba(244, 239, 230, 0.38);
     }
 
-    .project-card[open] {
-      border-color: rgba(125, 181, 177, 0.58);
-      background: rgba(13, 28, 34, 0.76);
+    .intro-card .section-label {
+      color: var(--water);
     }
 
-    .project-card summary {
-      min-height: 250px;
-      padding: 28px;
-      cursor: pointer;
-      list-style: none;
+    .intro-deck {
+      max-width: 590px;
+      margin-top: 21px;
+      color: rgba(244, 239, 230, 0.76);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .intro-actions,
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 28px;
+    }
+
+    .pill-link {
+      min-height: 40px;
+      padding: 0 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid rgba(244, 239, 230, 0.24);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      font-weight: 720;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .pill-link:hover {
+      border-color: rgba(141, 200, 183, 0.72);
+      background: rgba(141, 200, 183, 0.12);
+    }
+
+    .pill-link.primary {
+      border-color: var(--cream);
+      background: var(--cream);
+      color: var(--sidebar);
+    }
+
+    .intro-side {
+      align-self: stretch;
+      padding-left: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      border-left: 1px solid rgba(244, 239, 230, 0.18);
+    }
+
+    .current-focus {
+      color: rgba(244, 239, 230, 0.48);
+      font-size: 10px;
+    }
+
+    .focus-text {
+      margin-top: 10px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 23px;
+      line-height: 1.25;
+    }
+
+    .metrics {
+      margin-top: 28px;
       display: grid;
-      align-content: space-between;
-      gap: 24px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 17px;
     }
 
-    .project-card summary::-webkit-details-marker {
+    .metric strong {
+      display: block;
+      color: var(--water);
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 24px;
+      font-weight: 620;
+    }
+
+    .metric span {
+      color: rgba(244, 239, 230, 0.48);
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .notes-section {
+      padding: clamp(30px, 4vw, 54px);
+      background: #f0f2ed;
+    }
+
+    .notes-heading {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .notes-count {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
+      gap: 16px;
+    }
+
+    .note-entry {
+      position: relative;
+      min-height: 480px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border-radius: 18px 7px 18px 7px;
+      transition: transform 180ms ease;
+    }
+
+    .note-entry:hover {
+      transform: translateY(-3px);
+    }
+
+    .note-entry.featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(210px, 0.72fr);
+      grid-template-areas: "content figure";
+      color: var(--cream);
+      background: #10343a;
+    }
+
+    .note-entry.featured::after {
       display: none;
     }
 
-    .project-topline {
+    .featured-content {
+      grid-area: content;
+      min-width: 0;
+      padding: 30px;
       display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 780;
+      flex-direction: column;
     }
 
-    .project-title {
-      font-size: clamp(28px, 3.1vw, 42px);
+    .note-figure.featured-figure {
+      grid-area: figure;
+      height: 100%;
+      padding: 0;
+      border-right: 0;
+      border-bottom: 0;
+      border-left: 1px solid rgba(244, 239, 230, 0.12);
+      background: #233a44;
+    }
+
+    .note-figure.featured-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .note-entry.featured .note-title {
+      margin-top: 24px;
+      font-size: clamp(27px, 2.5vw, 36px);
       line-height: 1.05;
-      margin-bottom: 12px;
     }
 
-    .project-desc {
-      max-width: 560px;
-      color: rgba(247, 241, 230, 0.78);
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .tag {
-      color: var(--blue);
-      border: 1px solid rgba(189, 217, 233, 0.24);
-      background: rgba(189, 217, 233, 0.08);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 760;
-    }
-
-    .project-detail {
-      padding: 0 28px 30px;
-      color: rgba(247, 241, 230, 0.78);
-    }
-
-    .project-detail ul {
-      padding-left: 18px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .project-archive {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 28px;
-    }
-
-    .project-archive a {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 18px;
-      border: 1px solid rgba(189, 217, 233, 0.32);
-      background: rgba(8, 16, 24, 0.62);
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 800;
-      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
-    }
-
-    .project-archive a:hover {
-      background: rgba(125, 181, 177, 0.16);
-      border-color: var(--water);
-      transform: translateX(3px);
-    }
-
-    .skills {
-      background:
-        linear-gradient(90deg, rgba(16, 24, 32, 0.96), rgba(18, 38, 45, 0.9)),
-        var(--climb-img);
-      background-size: cover;
-      background-position: center;
-    }
-
-    .skill-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .skill-card {
-      min-height: 285px;
-      padding: 26px;
-      border: 1px solid var(--line);
-      background: rgba(8, 16, 24, 0.64);
-      backdrop-filter: blur(14px);
-    }
-
-    .skill-card h3 {
-      font-size: 25px;
-      margin-bottom: 18px;
-    }
-
-    .skill-card p {
-      color: rgba(247, 241, 230, 0.76);
-      font-size: 15px;
-    }
-
-    .field-notes {
-      background: #0b151d;
-    }
-
-    .notes-banner {
-      position: relative;
-      isolation: isolate;
-      min-height: 480px;
-      padding: 44px;
-      overflow: hidden;
-      border: 1px solid rgba(216, 193, 161, 0.28);
-      background:
-        radial-gradient(circle at 84% 24%, rgba(185, 108, 77, 0.2), transparent 24rem),
-        linear-gradient(125deg, rgba(20, 36, 45, 0.98), rgba(8, 16, 24, 0.96));
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 52px;
-    }
-
-    .notes-banner + .notes-banner {
-      margin-top: 28px;
-    }
-
-    .notes-contours {
-      position: absolute;
-      z-index: -1;
-      top: -16%;
-      right: -5%;
-      width: min(62%, 720px);
-      height: 132%;
-      color: rgba(216, 193, 161, 0.18);
-      pointer-events: none;
-    }
-
-    .notes-topline,
-    .notes-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 28px;
-    }
-
-    .notes-label,
-    .notes-status {
-      font-size: 12px;
-      font-weight: 820;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .notes-label {
-      color: var(--blue);
-    }
-
-    .notes-status {
-      color: rgba(247, 241, 230, 0.56);
-    }
-
-    .notes-copy {
-      max-width: 780px;
-      align-self: center;
-    }
-
-    .notes-title {
-      max-width: 720px;
-      font-size: clamp(46px, 6vw, 78px);
-      line-height: 0.98;
-      margin-bottom: 22px;
-    }
-
-    .notes-intro {
-      max-width: 650px;
-      color: rgba(247, 241, 230, 0.74);
-      font-size: 18px;
-    }
-
-    .notes-route {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      flex: 1;
-      border-top: 1px solid rgba(247, 241, 230, 0.16);
-    }
-
-    .notes-topic {
-      position: relative;
-      padding: 18px 22px 0 0;
-      color: rgba(247, 241, 230, 0.65);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .notes-topic::before {
-      content: "";
-      position: absolute;
-      top: -5px;
-      left: 0;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--stone);
-      box-shadow: 0 0 0 5px rgba(216, 193, 161, 0.12);
-    }
-
-    .notes-topic span {
-      display: block;
-      max-width: 220px;
-      margin-top: 8px;
-      color: rgba(247, 241, 230, 0.92);
-      font-family: "Fraunces", Georgia, serif;
-      font-size: 17px;
-      font-weight: 500;
-      letter-spacing: 0;
-      line-height: 1.25;
-      text-transform: none;
-    }
-
-    .notes-link {
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      min-height: 46px;
-      padding: 0 18px;
-      border: 1px solid rgba(247, 241, 230, 0.24);
-      border-radius: 999px;
-      background: rgba(247, 241, 230, 0.06);
-      font-size: 13px;
-      font-weight: 820;
-      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
-    }
-
-    .notes-link:hover {
-      transform: translateX(3px);
-      border-color: rgba(125, 181, 177, 0.62);
-      background: rgba(125, 181, 177, 0.14);
-    }
-
-    .approach {
-      background: #f3ebdf;
-      color: #16202a;
-    }
-
-    .approach .kicker,
-    .approach .lede {
-      color: rgba(22, 32, 42, 0.68);
-    }
-
-    .principles {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .principle {
-      border-top: 1px solid rgba(22, 32, 42, 0.2);
+    .note-entry.featured .note-read {
+      margin-top: auto;
       padding-top: 24px;
     }
 
-    .principle-icon {
-      width: 52px;
-      height: 52px;
-      border: 1px solid rgba(22, 32, 42, 0.28);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      margin-bottom: 18px;
-      color: #8f4f3b;
-      font-weight: 860;
-    }
-
-    .principle h3 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .principle p {
-      color: rgba(22, 32, 42, 0.72);
-    }
-
-    .contact {
-      min-height: 500px;
+    .note-meta {
+      position: relative;
+      z-index: 1;
       display: flex;
-      align-items: center;
-      background-image:
-        linear-gradient(90deg, rgba(8, 16, 24, 0.82), rgba(15, 30, 39, 0.48)),
-        var(--canyon-img);
-      background-size: cover;
-      background-position: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      color: rgba(244, 239, 230, 0.54);
+      font-size: 10px;
     }
 
-    .contact-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 54px;
-      align-items: center;
+    .note-title {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+      margin-top: auto;
+      font-size: clamp(29px, 3.8vw, 46px);
+      line-height: 1.03;
     }
 
-    .contact-card {
-      min-width: 320px;
-      padding-left: 38px;
-      border-left: 1px solid rgba(247, 241, 230, 0.34);
-    }
-
-    .contact-card p {
-      color: var(--muted);
-      margin-top: 8px;
-    }
-
-    footer {
-      padding: 36px 0 44px;
-      color: var(--muted);
-      text-align: center;
+    .note-summary {
+      position: relative;
+      z-index: 1;
+      max-width: 540px;
+      margin-top: 16px;
+      color: rgba(244, 239, 230, 0.66);
       font-size: 13px;
     }
 
-    @media (max-width: 980px) {
-      .menu-toggle {
-        display: grid;
-      }
+    .note-read {
+      position: relative;
+      z-index: 1;
+      width: fit-content;
+      margin-top: 25px;
+      padding-bottom: 3px;
+      border-bottom: 1px solid currentColor;
+      color: var(--water);
+      font-size: 11px;
+      font-weight: 760;
+    }
 
-      .nav-links {
-        position: fixed;
-        inset: var(--nav-height) 0 auto 0;
-        display: grid;
-        gap: 0;
-        padding: 10px 21px 24px;
-        background: rgba(8, 16, 24, 0.96);
-        border-bottom: 1px solid var(--line);
-        transform: translateY(-120%);
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-        transition: transform 180ms ease, opacity 180ms ease, visibility 180ms ease;
-      }
+    .note-entry.secondary {
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
 
-      .nav-open .nav-links {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-      }
+    .note-figure {
+      height: 184px;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(244, 239, 230, 0.12);
+      background: #e9eef2;
+    }
 
-      .nav-links a {
-        padding: 16px 0;
-        border-bottom: 1px solid rgba(247, 241, 230, 0.08);
-      }
+    .note-figure img {
+      width: 100%;
+      max-width: none;
+      object-fit: contain;
+    }
 
-      .nav-links a.active::after,
-      .nav-links a:hover::after {
-        display: none;
-      }
+    .note-entry.secondary .note-content {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .hero-grid,
-      .section-head,
-      .about-grid,
-      .contact-grid {
-        grid-template-columns: 1fr;
-      }
+    .note-entry.secondary .note-meta {
+      color: var(--muted);
+    }
 
-      .stats,
-      .skill-grid,
-      .principles {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .note-entry.secondary .note-title {
+      margin-top: 19px;
+      font-size: clamp(25px, 3vw, 35px);
+    }
 
-      .project-grid {
-        grid-template-columns: 1fr;
-      }
+    .note-entry.secondary .note-summary {
+      color: var(--muted);
+    }
 
-      .notes-banner {
-        padding: 34px;
-      }
+    .note-entry.secondary .note-read {
+      margin-top: auto;
+      padding-top: 22px;
+      color: var(--water-dark);
+    }
 
-      .notes-footer {
-        align-items: flex-end;
-      }
+    .about-layout {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(290px, 0.85fr);
+      gap: 54px;
+    }
 
-      .contact-card {
-        min-width: 0;
-        padding-left: 0;
-        border-left: 0;
+    .about-copy {
+      max-width: 670px;
+      display: grid;
+      gap: 14px;
+      color: #415157;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .fact-list {
+      border-top: 1px solid var(--line);
+    }
+
+    .fact-row {
+      padding: 14px 0;
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 15px;
+      border-bottom: 1px solid var(--line);
+      font-size: 11px;
+    }
+
+    .fact-row dt {
+      color: var(--muted);
+    }
+
+    .fact-row dd {
+      color: var(--ink);
+      font-weight: 650;
+    }
+
+    .principle-strip {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .principle-mini {
+      padding: 17px;
+      border-left: 2px solid var(--water);
+      background: var(--paper-cool);
+    }
+
+    .principle-mini strong {
+      display: block;
+      margin-bottom: 6px;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 16px;
+    }
+
+    .principle-mini p {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .experience-card {
+      background: #f6f5ef;
+    }
+
+    .experience-list {
+      margin-top: 34px;
+      border-top: 1px solid var(--line);
+    }
+
+    .experience-row {
+      padding: 19px 0;
+      display: grid;
+      grid-template-columns: 142px minmax(220px, 0.72fr) minmax(0, 1fr);
+      gap: 24px;
+      border-bottom: 1px solid var(--line);
+      align-items: start;
+    }
+
+    .experience-time {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .experience-role h3 {
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .experience-org {
+      margin-top: 5px;
+      color: var(--water-dark);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .experience-row > p {
+      color: #536167;
+      font-size: 11px;
+      line-height: 1.62;
+    }
+
+    .projects-card {
+      color: var(--cream);
+      border-color: rgba(255, 255, 255, 0.08);
+      background: var(--sidebar);
+    }
+
+    .projects-card .log-index {
+      color: rgba(244, 239, 230, 0.28);
+    }
+
+    .projects-card .section-label {
+      color: var(--water);
+    }
+
+    .projects-card .section-intro {
+      color: rgba(244, 239, 230, 0.58);
+    }
+
+    .project-list {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid rgba(244, 239, 230, 0.14);
+      border-left: 1px solid rgba(244, 239, 230, 0.14);
+    }
+
+    .project-item {
+      min-height: 184px;
+      padding: 22px;
+      border-right: 1px solid rgba(244, 239, 230, 0.14);
+      border-bottom: 1px solid rgba(244, 239, 230, 0.14);
+    }
+
+    .project-type {
+      color: var(--water);
+      font-size: 9px;
+    }
+
+    .project-item h3 {
+      margin-top: 25px;
+      font-size: 22px;
+      line-height: 1.05;
+    }
+
+    .project-item p {
+      margin-top: 10px;
+      color: rgba(244, 239, 230, 0.56);
+      font-size: 10px;
+    }
+
+    .archive-link {
+      width: fit-content;
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--water);
+      font-size: 11px;
+      font-weight: 740;
+    }
+
+    .skills-card {
+      background: #eaf0ed;
+    }
+
+    .skills-layout {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .skill-group {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 7px 16px 7px 16px;
+      background: rgba(248, 247, 242, 0.7);
+    }
+
+    .skill-group h3 {
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .skill-group p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .contact-card {
+      min-height: min(560px, calc(100vh - 44px));
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 48px;
+      align-items: end;
+      color: var(--cream);
+      border-color: rgba(255, 255, 255, 0.1);
+      background:
+        linear-gradient(90deg, rgba(14, 29, 35, 0.92), rgba(14, 29, 35, 0.52)),
+        url("assets/canyon-wide.jpg") center / cover;
+    }
+
+    .contact-card .log-index {
+      color: rgba(244, 239, 230, 0.34);
+    }
+
+    .contact-card .section-label {
+      color: var(--water);
+    }
+
+    .contact-card .section-intro {
+      color: rgba(244, 239, 230, 0.65);
+    }
+
+    .contact-stamp {
+      min-width: 180px;
+      padding: 20px;
+      border: 1px solid rgba(244, 239, 230, 0.2);
+      border-radius: 50%;
+      text-align: center;
+      color: rgba(244, 239, 230, 0.66);
+      font-size: 10px;
+      transform: rotate(-4deg);
+    }
+
+    .contact-stamp strong {
+      display: block;
+      color: var(--cream);
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 18px;
+    }
+
+    /* Visual continuity: one landscape, different masks. */
+    body {
+      background:
+        linear-gradient(120deg, rgba(7, 17, 23, 0.7), rgba(18, 39, 49, 0.38)),
+        url("assets/mountain-river-background.jpg") center / cover fixed;
+    }
+
+    .sidebar {
+      inset: 14px auto 14px 14px;
+      padding: 24px 20px 21px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .identity {
+      display: block;
+    }
+
+    .sidebar nav {
+      margin-top: 30px;
+    }
+
+    .identity-name {
+      font-size: 18px;
+    }
+
+    .side-nav a::before {
+      background: transparent;
+    }
+
+    .stream {
+      margin-left: calc(var(--sidebar-width) - 2px);
+      padding: 14px 16px 54px 14px;
+      background: transparent;
+    }
+
+    .log-card {
+      width: min(100%, 1180px);
+      min-height: calc(100vh - 28px);
+      margin-bottom: 14px;
+      color: var(--cream);
+      border: 0;
+      background: rgba(9, 25, 33, 0.56);
+      box-shadow: none;
+      backdrop-filter: blur(11px) saturate(106%);
+      scroll-margin-top: 14px;
+    }
+
+    .log-card::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 42%);
+      pointer-events: none;
+    }
+
+    .log-index {
+      color: rgba(244, 239, 230, 0.38);
+    }
+
+    .section-label {
+      color: var(--water);
+    }
+
+    .section-intro,
+    .notes-count {
+      color: rgba(244, 239, 230, 0.64);
+    }
+
+    .intro-card {
+      min-height: min(640px, calc(100vh - 28px));
+      background:
+        linear-gradient(90deg, rgba(7, 17, 23, 0.78) 0%, rgba(12, 31, 39, 0.58) 58%, rgba(13, 34, 43, 0.27) 100%),
+        url("assets/mountain-river-background.jpg") center / cover;
+    }
+
+    .notes-section {
+      background: #304854;
+      backdrop-filter: none;
+    }
+
+    .notes-section::before {
+      display: none;
+    }
+
+    .note-entry.featured {
+      border: 0;
+      background: #4b6570;
+    }
+
+    .note-entry.secondary {
+      color: var(--cream);
+      border: 0;
+      background: #3d5662;
+    }
+
+    .note-entry.secondary .note-content {
+      background: transparent;
+    }
+
+    .note-entry.secondary .note-meta,
+    .note-entry.secondary .note-summary {
+      color: rgba(244, 239, 230, 0.6);
+    }
+
+    .note-entry.secondary .note-read {
+      color: var(--water);
+    }
+
+    #about {
+      background:
+        linear-gradient(90deg, rgba(8, 20, 27, 0.78), rgba(20, 38, 45, 0.56)),
+        url("assets/canyon-wide.jpg") center 48% / cover;
+    }
+
+    .about-copy,
+    .fact-row dd {
+      color: rgba(244, 239, 230, 0.78);
+    }
+
+    .fact-row,
+    .fact-list {
+      border-color: rgba(244, 239, 230, 0.16);
+    }
+
+    .fact-row dt {
+      color: rgba(244, 239, 230, 0.46);
+    }
+
+    .principle-mini {
+      border-left-color: var(--water);
+      background: rgba(7, 23, 30, 0.34);
+    }
+
+    .principle-mini p {
+      color: rgba(244, 239, 230, 0.56);
+    }
+
+    .experience-card {
+      background:
+        linear-gradient(110deg, rgba(7, 20, 27, 0.8), rgba(16, 39, 48, 0.54)),
+        url("assets/hero-canyon.jpg") center 64% / cover;
+    }
+
+    .experience-list,
+    .experience-row {
+      border-color: rgba(244, 239, 230, 0.16);
+    }
+
+    .experience-time {
+      color: rgba(244, 239, 230, 0.46);
+    }
+
+    .experience-row > p {
+      color: rgba(244, 239, 230, 0.64);
+    }
+
+    .experience-org {
+      color: var(--water);
+    }
+
+    .projects-card {
+      background:
+        linear-gradient(110deg, rgba(8, 20, 27, 0.82), rgba(25, 38, 43, 0.6)),
+        url("assets/canyon-wide.jpg") center / cover;
+    }
+
+    .skills-card {
+      background:
+        linear-gradient(100deg, rgba(8, 22, 29, 0.82), rgba(15, 43, 49, 0.56)),
+        url("assets/climbing-water.jpg") center 35% / cover;
+    }
+
+    .skill-group {
+      border: 0;
+      background: rgba(7, 22, 29, 0.42);
+    }
+
+    .skill-group p {
+      color: rgba(244, 239, 230, 0.6);
+    }
+
+    .contact-card {
+      min-height: min(560px, calc(100vh - 28px));
+      background:
+        linear-gradient(90deg, rgba(7, 19, 25, 0.76), rgba(14, 34, 42, 0.34)),
+        url("assets/hero-canyon.jpg") center 56% / cover;
+    }
+
+    @media (min-width: 981px) {
+      .stream {
+        scroll-snap-type: y mandatory;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 1120px) {
       :root {
-        --nav-height: 68px;
+        --sidebar-width: 198px;
       }
 
-      .container,
-      .nav-inner {
-        width: min(100% - 24px, var(--max));
+      .sidebar {
+        padding-right: 17px;
+        padding-left: 17px;
       }
 
-      .hero {
-        min-height: auto;
-        padding-top: 126px;
-        padding-bottom: 82px;
-        background-position: 62% center;
+      .log-card {
+        padding: 42px;
       }
 
-      .section {
-        padding: 84px 0;
-      }
-
-      .hero-grid {
-        gap: 40px;
-      }
-
-      h1 {
-        font-size: clamp(44px, 12vw, 58px);
-        line-height: 1.02;
-      }
-
-      .profile-card {
-        padding: 18px;
-      }
-
-      .profile-photo {
-        min-height: 260px;
-      }
-
-      .stats,
-      .skill-grid,
-      .principles {
+      .notes-grid {
         grid-template-columns: 1fr;
       }
 
-      .stat {
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
+      .note-entry {
+        min-height: 400px;
       }
 
-      .stat:last-child {
+      .note-entry.secondary {
+        min-height: 360px;
+        display: grid;
+        grid-template-columns: 42% 1fr;
+      }
+
+      .note-entry.featured {
+        grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.72fr);
+      }
+
+      .note-figure {
+        height: 100%;
+        border-right: 1px solid rgba(244, 239, 230, 0.12);
         border-bottom: 0;
       }
 
-      .fact,
-      .timeline-item {
-        grid-template-columns: 1fr;
-        gap: 10px;
+      .note-figure img {
+        width: 780px;
       }
 
-      .project-card summary {
-        min-height: 230px;
-        padding: 22px;
+      .about-layout {
+        gap: 36px;
       }
 
-      .project-detail {
-        padding: 0 22px 24px;
+      .experience-row {
+        grid-template-columns: 112px minmax(200px, 0.78fr) 1fr;
+        gap: 18px;
       }
 
-      .skill-card {
+      .skills-layout {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 820px) {
+      body {
+        overflow: hidden;
+      }
+
+      .mobile-bar {
+        position: fixed;
+        z-index: 50;
+        inset: 0 0 auto 0;
+        height: 64px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--cream);
+        background: rgba(19, 35, 42, 0.95);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .mobile-name {
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 18px;
+      }
+
+      .menu-toggle {
+        width: 39px;
+        height: 39px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(244, 239, 230, 0.18);
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .menu-toggle span,
+      .menu-toggle span::before,
+      .menu-toggle span::after {
+        width: 16px;
+        height: 1px;
+        display: block;
+        background: var(--cream);
+      }
+
+      .menu-toggle span {
+        position: relative;
+      }
+
+      .menu-toggle span::before,
+      .menu-toggle span::after {
+        content: "";
+        position: absolute;
+        left: 0;
+      }
+
+      .menu-toggle span::before { top: -5px; }
+      .menu-toggle span::after { top: 5px; }
+
+      .menu-open .menu-toggle span { background: transparent; }
+      .menu-open .menu-toggle span::before { top: 0; transform: rotate(45deg); }
+      .menu-open .menu-toggle span::after { top: 0; transform: rotate(-45deg); }
+
+      .sidebar {
+        inset: 0 auto 0 0;
+        width: min(82vw, 300px);
+        padding-top: 84px;
+        transform: translateX(-105%);
+        transition: transform 200ms ease;
+        box-shadow: 18px 0 50px rgba(5, 15, 20, 0.25);
+      }
+
+      .menu-open .sidebar {
+        transform: translateX(0);
+      }
+
+      .stream {
+        margin-left: 0;
+        padding: 76px 12px 44px;
+        overflow-x: hidden;
+        scroll-padding-top: 76px;
+      }
+
+      .log-card {
         min-height: auto;
+        margin-bottom: 12px;
+        padding: 32px 24px;
+        scroll-margin-top: 76px;
       }
 
-      .notes-banner {
-        min-height: 560px;
-        padding: 26px 22px;
-        gap: 40px;
+      .intro-card {
+        min-height: 610px;
+        grid-template-columns: 1fr;
+        gap: 34px;
+        align-content: end;
       }
 
-      .notes-contours {
-        width: 110%;
-        height: 72%;
-        top: -6%;
-        right: -42%;
+      .intro-side {
+        align-self: auto;
+        padding: 24px 0 0;
+        border-top: 1px solid rgba(244, 239, 230, 0.18);
+        border-left: 0;
       }
 
-      .notes-topline,
-      .notes-footer {
-        align-items: flex-start;
+      .notes-section {
+        padding: 30px 18px;
+      }
+
+      .notes-heading {
+        align-items: start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .note-entry.secondary {
+        display: flex;
+      }
+
+      .note-entry.featured {
+        display: flex;
         flex-direction: column;
       }
 
-      .notes-title {
-        font-size: clamp(42px, 13vw, 58px);
+      .note-figure.featured-figure {
+        order: -1;
+        height: 230px;
+        flex: 0 0 230px;
+        border-left: 0;
+        border-bottom: 1px solid rgba(244, 239, 230, 0.12);
       }
 
-      .notes-route {
+      .note-figure {
+        height: 170px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(244, 239, 230, 0.12);
+      }
+
+      .note-figure img {
         width: 100%;
+        max-width: 100%;
+      }
+
+      .about-layout,
+      .contact-card {
         grid-template-columns: 1fr;
-        border-top: 0;
       }
 
-      .notes-topic {
-        padding: 16px 0 16px 22px;
-        border-top: 1px solid rgba(247, 241, 230, 0.16);
+      .principle-strip,
+      .skills-layout {
+        grid-template-columns: 1fr;
       }
 
-      .notes-topic::before {
-        top: 20px;
-        left: -4px;
+      .experience-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .project-list {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-card {
+        min-height: 520px;
+        align-content: end;
+      }
+
+      .contact-stamp {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 45px;
+      }
+
+      .section-title {
+        font-size: 31px;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .note-entry {
+        min-height: 430px;
+      }
+
+      .featured-content {
+        padding: 24px;
+      }
+
+      .note-title {
+        font-size: 30px;
+      }
+
+      .fact-row {
+        grid-template-columns: 72px 1fr;
       }
     }
 
@@ -1051,449 +1315,266 @@
       *::after {
         scroll-behavior: auto !important;
         transition-duration: 0.001ms !important;
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
       }
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <nav class="nav" aria-label="Primary navigation">
-      <div class="nav-inner">
-        <a href="#home" class="logo" aria-label="Bonnie Gao home">Bonnie Gao</a>
-        <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
-          <span aria-hidden="true"></span>
-        </button>
-        <div class="nav-links" id="nav-links">
-          <a class="active" href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#field-notes">Field Notes</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </div>
+  <div class="mobile-bar">
+    <a class="mobile-name" href="#home">Bonnie Gao</a>
+    <button class="menu-toggle" type="button" aria-label="Open log index" aria-expanded="false"><span aria-hidden="true"></span></button>
+  </div>
+
+  <aside class="sidebar" aria-label="Log index">
+    <a class="identity" href="#home">
+      <span class="identity-name">Bonnie Gao</span>
+    </a>
+
+    <nav>
+      <ol class="side-nav">
+        <li><a class="active" href="#home">Now</a></li>
+        <li><a href="#field-notes">Field Notes</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Toolkit</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ol>
     </nav>
 
-    <section class="section hero" id="home" aria-labelledby="hero-title">
-      <div class="container">
-        <div class="hero-grid">
-          <div>
-            <div class="kicker">AI Builder · Healthcare AI · Production ML</div>
-            <h1 id="hero-title">Bonnie Gao</h1>
-            <p class="subtitle">AI Builder for Healthcare, Intelligent Systems, and Production-Grade ML</p>
-            <p class="lede">I build AI systems that move from research prototypes into reliable workflows: clinical RAG agents, medical imaging ML pipelines, and scalable product platforms used by real teams.</p>
-            <div class="hero-actions">
-              <a class="btn primary" href="mailto:0721gqh@gmail.com">Get in touch <span aria-hidden="true">→</span></a>
-              <a class="btn" href="#projects">View projects <span aria-hidden="true">↓</span></a>
-              <div class="social-row" aria-label="Social links">
-                <a class="icon-btn" href="https://www.linkedin.com/in/qiaohui-gao/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.98H3.75V20h3.19V8.98ZM5.35 4a1.85 1.85 0 1 0 0 3.7 1.85 1.85 0 0 0 0-3.7Zm5.18 4.98H7.48V20h3.05v-5.79c0-1.52.7-2.42 2.02-2.42 1.21 0 1.79.86 1.79 2.42V20h3.05v-6.25c0-3.35-1.79-4.91-4.17-4.91-1.92 0-2.78 1.06-3.26 1.81h-.04V8.98Z"/></svg>
-                </a>
-                <a class="icon-btn" href="https://github.com/QiaohuiGao" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.75a9.25 9.25 0 0 0-2.93 18.03c.46.08.63-.2.63-.44v-1.58c-2.56.56-3.1-1.1-3.1-1.1-.42-1.06-1.02-1.34-1.02-1.34-.84-.57.06-.56.06-.56.92.07 1.41.95 1.41.95.82 1.4 2.15 1 2.67.76.08-.6.32-1 .58-1.23-2.04-.23-4.19-1.02-4.19-4.55 0-1 .36-1.83.95-2.48-.1-.23-.41-1.17.09-2.44 0 0 .77-.25 2.54.95A8.8 8.8 0 0 1 12 7.4c.78 0 1.56.1 2.3.31 1.76-1.2 2.53-.95 2.53-.95.5 1.27.19 2.21.1 2.44.59.65.94 1.47.94 2.48 0 3.54-2.15 4.31-4.2 4.54.33.29.62.85.62 1.71v2.41c0 .24.17.52.64.44A9.25 9.25 0 0 0 12 2.75Z"/></svg>
-                </a>
-              </div>
-            </div>
+  </aside>
+
+  <main class="stream" id="stream">
+    <section class="log-card intro-card" id="home" aria-labelledby="home-title">
+      <div class="log-index">Entry 00 / Now</div>
+      <div>
+        <div class="section-label">Current focus</div>
+        <h1 id="home-title">I build AI systems that hold up in the real world.</h1>
+        <p class="intro-deck">Healthcare AI, retrieval systems, and production ML shaped by product judgment—not just model capability.</p>
+        <div class="intro-actions">
+          <a class="pill-link primary" href="#field-notes">Read my field notes</a>
+          <a class="pill-link" href="mailto:0721gqh@gmail.com">Get in touch</a>
+        </div>
+      </div>
+      <aside class="intro-side">
+        <div class="current-focus">Working across</div>
+        <div class="focus-text">Clinical reasoning agents, reliable RAG, and ML platforms.</div>
+        <div class="metrics" aria-label="Selected impact">
+          <div class="metric"><strong>98%</strong><span>high-risk recall</span></div>
+          <div class="metric"><strong>80K+</strong><span>images processed daily</span></div>
+          <div class="metric"><strong>3.8×</strong><span>batch speedup</span></div>
+          <div class="metric"><strong>170K+</strong><span>buyers served</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="log-card notes-section" id="field-notes" aria-labelledby="notes-title">
+      <div class="log-index">Entry 01 / Writing</div>
+      <header class="notes-heading">
+        <div><div class="section-label">Field Notes</div><h2 class="section-title" id="notes-title">What I’m learning while building.</h2></div>
+        <p class="notes-count">2 published notes · AI / product / engineering</p>
+      </header>
+
+      <div class="notes-grid">
+        <a class="note-entry featured" href="field-notes/deepseek-superagent.html">
+          <div class="note-figure featured-figure"><img src="assets/field-notes/superagent/01.png" alt="Super-agent reading notes cover" /></div>
+          <div class="featured-content">
+            <div class="note-meta"><span>Note 02</span><span>Agent systems</span><span>Reading notes</span></div>
+            <h3 class="note-title">Super-agent 设计探索：迈向更自主的 Agent 系统</h3>
+            <p class="note-summary">Why persistent agents at scale still depend on the fundamentals of systems design: routing, state, recovery, and clear experimental limits.</p>
+            <span class="note-read">Read the note</span>
           </div>
+        </a>
 
-          <aside class="profile-card" aria-label="Profile highlight">
-            <div class="profile-photo" role="img" aria-label="Mountain climbing photograph"></div>
-            <div>
-              <strong>Healthcare AI · RAG Agents · ML Platforms</strong>
-              <p class="profile-meta">Boston, MA · Northeastern University · Harvard Medical School &amp; MGH</p>
-            </div>
-          </aside>
-        </div>
-
-        <div class="stats" aria-label="Selected impact metrics">
-          <div class="stat"><strong>98%</strong><span>high-risk recall in clinical triage pilot</span></div>
-          <div class="stat"><strong>80K+</strong><span>medical images processed per day by annotation teams</span></div>
-          <div class="stat"><strong>3.8x</strong><span>batch processing speedup for CT workloads</span></div>
-          <div class="stat"><strong>170K+</strong><span>buyers served on pharmaceutical B2B systems</span></div>
-        </div>
+        <a class="note-entry secondary" href="field-notes/rag-system-layer-by-layer.html">
+          <div class="note-figure"><img src="assets/rag-system-layers-diagram.png" alt="Seven-layer production RAG system diagram" /></div>
+          <div class="note-content">
+            <div class="note-meta"><span>Note 01</span><span>AI + engineering</span><span>8 min</span></div>
+            <h3 class="note-title">Designing a RAG System, Layer by Layer</h3>
+            <p class="note-summary">The pipeline behind a production system, and the question worth asking at each layer.</p>
+            <span class="note-read">Read the note</span>
+          </div>
+        </a>
       </div>
     </section>
 
-    <section class="section about" id="about" aria-labelledby="about-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">About</div>
-            <h2 class="section-title" id="about-title">Building AI that works beyond the demo.</h2>
-          </div>
-          <p class="lede">My work sits at the intersection of model capability, product judgment, and production engineering.</p>
-        </div>
+    <section class="log-card" id="about" aria-labelledby="about-title">
+      <div class="log-index">Entry 02 / Context</div>
+      <div class="section-label">About</div>
+      <h2 class="section-title" id="about-title">Product instincts, engineering depth.</h2>
+      <p class="section-intro">My work sits where model capability, workflow design, and production constraints meet.</p>
 
-        <div class="about-grid">
-          <div class="about-copy">
-            <p>I started my career in product management—discovering user needs and designing solutions. But I wanted to do more than propose ideas; I wanted to build them. Now, I use advanced technology to solve real business problems and deliver meaningful user value.</p>
-            <p>I am pursuing an M.S. in Computer Software Engineering at Northeastern University and building healthcare AI systems across research and product environments.</p>
-            <p>At Harvard Medical School and Massachusetts General Hospital, I work on clinical reasoning agents that combine RAG, medical ontologies, graph traversal, and evidence-grounded LLM workflows for high-risk disease recognition.</p>
-            <p>At United Imaging Intelligence America, I built ML and software infrastructure for medical image annotation: model benchmarking, TensorRT acceleration, distributed job scheduling, and reliable pipelines for high-volume clinical imaging workflows.</p>
-            <p>Before focusing on AI engineering, I led product and software work for pharmaceutical B2B platforms, translating complex operational systems into roadmaps, data workflows, and scalable services.</p>
-          </div>
-
-          <div class="facts">
-            <div class="fact">
-              <div class="fact-label">Education</div>
-              <div class="fact-value">M.S. Computer Software Engineering, Northeastern University</div>
-            </div>
-            <div class="fact">
-              <div class="fact-label">Research</div>
-              <div class="fact-value">Clinical RAG agents, medical knowledge retrieval, ontology-aware reasoning</div>
-            </div>
-            <div class="fact">
-              <div class="fact-label">Engineering</div>
-              <div class="fact-value">FastAPI, Python, PyTorch, TensorRT, distributed queues, cloud deployment</div>
-            </div>
-            <div class="fact">
-              <div class="fact-label">Product</div>
-              <div class="fact-value">Roadmaps, metrics, stakeholder alignment, healthcare and pharmaceutical workflows</div>
-            </div>
-          </div>
+      <div class="about-layout">
+        <div class="about-copy">
+          <p>I started in product management, discovering user needs and shaping solutions. I moved deeper into engineering because I wanted to build those ideas, test their limits, and own what happens after the demo.</p>
+          <p>At Harvard Medical School and Massachusetts General Hospital, I worked on clinical reasoning agents combining RAG, medical ontologies, graph traversal, and evidence-grounded LLM workflows.</p>
+          <p>At United Imaging Intelligence America, I built ML infrastructure for medical image annotation, from model benchmarking and TensorRT acceleration to distributed scheduling and reliable high-volume pipelines.</p>
         </div>
+        <dl class="fact-list">
+          <div class="fact-row"><dt>Education</dt><dd>M.S. Computer Software Engineering, Northeastern</dd></div>
+          <div class="fact-row"><dt>Research</dt><dd>Clinical RAG, ontologies, evidence-grounded reasoning</dd></div>
+          <div class="fact-row"><dt>Engineering</dt><dd>Python, FastAPI, PyTorch, TensorRT, distributed systems</dd></div>
+          <div class="fact-row"><dt>Product</dt><dd>Roadmaps, metrics, stakeholder alignment, B2B workflows</dd></div>
+        </dl>
+      </div>
+
+      <div class="principle-strip" aria-label="Working principles">
+        <div class="principle-mini"><strong>Ground the system</strong><p>Keep output tied to evidence, provenance, and evaluation.</p></div>
+        <div class="principle-mini"><strong>Design for workflow</strong><p>Build around how people actually make decisions.</p></div>
+        <div class="principle-mini"><strong>Ship reliably</strong><p>Make prototypes survive real traffic and real failure modes.</p></div>
       </div>
     </section>
 
-    <section class="section experience" id="experience" aria-labelledby="experience-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Experience</div>
-            <h2 class="section-title" id="experience-title">Research, ML infrastructure, and product systems.</h2>
-          </div>
-          <p class="lede">A track record across clinical AI research, medical imaging ML, software engineering, and product leadership.</p>
-        </div>
+    <section class="log-card experience-card" id="experience" aria-labelledby="experience-title">
+      <div class="log-index">Entry 03 / Timeline</div>
+      <div class="section-label">Experience</div>
+      <h2 class="section-title" id="experience-title">A path from product systems to clinical AI.</h2>
 
-        <div class="timeline">
-          <article class="timeline-item">
-            <div class="time">May 2025 - Feb 2026</div>
-            <div>
-              <h3 class="role">Research Engineering Intern</h3>
-              <p class="org">Harvard Medical School and Massachusetts General Hospital · Boston, MA</p>
-              <p>Designed clinical RAG and graph-based reasoning pipelines for high-risk disease recognition, processing 2,000+ guidelines and 54K+ medical knowledge chunks with Neo4j, FAISS, BM25, PostgreSQL, LangGraph, and FastAPI.</p>
-            </div>
-          </article>
-
-          <article class="timeline-item">
-            <div class="time">Jan 2025 - Apr 2025</div>
-            <div>
-              <h3 class="role">Machine Learning / Software Engineering Intern</h3>
-              <p class="org">United Imaging Intelligence America · Burlington, MA</p>
-              <p>Built medical imaging ML pipelines and production tooling for annotation workflows, including PyTorch/TensorRT acceleration, REST APIs, distributed job scheduling, observability, and containerized deployment.</p>
-            </div>
-          </article>
-
-          <article class="timeline-item">
-            <div class="time">2020 - 2023</div>
-            <div>
-              <h3 class="role">Software Engineer and Product Leader</h3>
-              <p class="org">Leyo Pharm / YSB Inc. · Guangzhou, China</p>
-              <p>Built and led pharmaceutical B2B platform systems spanning seller billing, settlement, supplier onboarding, master data management, roadmap execution, and high-availability microservices.</p>
-            </div>
-          </article>
-
-          <article class="timeline-item">
-            <div class="time">Education</div>
-            <div>
-              <h3 class="role">Computer Software Engineering and Technology Management</h3>
-              <p class="org">Northeastern University · Sun Yat-sen University</p>
-              <p>Combines software engineering depth with product, operations, and technology management training for complex AI and healthcare systems.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section project-section" id="projects" aria-labelledby="projects-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Selected Projects</div>
-            <h2 class="section-title" id="projects-title">Systems with measurable impact.</h2>
-          </div>
-          <p class="lede">Each project connects a real workflow problem with model design, backend infrastructure, and product adoption.</p>
-        </div>
-
-        <div class="project-grid">
-          <details class="project-card">
-            <summary>
-              <div class="project-topline"><span>01 · Healthcare AI</span><span aria-hidden="true">+</span></div>
-              <div>
-                <h3 class="project-title">Clinical Triage RAG Agent</h3>
-                <p class="project-desc">Evidence-grounded triage agent for high-risk disease recognition across clinical guidelines and patient context.</p>
-                <div class="tags"><span class="tag">Graph RAG</span><span class="tag">LangGraph</span><span class="tag">Neo4j</span><span class="tag">FAISS/BM25</span></div>
-              </div>
-            </summary>
-            <div class="project-detail">
-              <ul>
-                <li>Processed 2,000+ clinical PDF guidelines with hierarchical chunking, metadata tracking, and retrieval provenance.</li>
-                <li>Combined semantic retrieval, sparse search, RRF fusion, ontology traversal, and clarification loops for safer reasoning.</li>
-                <li>Reached 90% triage accuracy and 98% high-risk escalation coverage in a 500-patient clinical pilot.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="project-card">
-            <summary>
-              <div class="project-topline"><span>02 · Medical Imaging ML</span><span aria-hidden="true">+</span></div>
-              <div>
-                <h3 class="project-title">Medical Image Annotation ML Platform</h3>
-                <p class="project-desc">High-volume ML infrastructure for medical image classification, labeling, and human review workflows.</p>
-                <div class="tags"><span class="tag">PyTorch</span><span class="tag">TensorRT</span><span class="tag">Celery</span><span class="tag">Docker</span></div>
-              </div>
-            </summary>
-            <div class="project-detail">
-              <ul>
-                <li>Served 5 annotation teams processing 80,000+ images per day with asynchronous APIs and quality feedback.</li>
-                <li>Benchmarked 80+ medical imaging architectures and improved selected model accuracy by 15%.</li>
-                <li>Improved batch processing 3.8x and delivered up to 10x inference acceleration through TensorRT conversion.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="project-card">
-            <summary>
-              <div class="project-topline"><span>03 · Platform Engineering</span><span aria-hidden="true">+</span></div>
-              <div>
-                <h3 class="project-title">Pharmaceutical B2B Platform</h3>
-                <p class="project-desc">Billing, settlement, transaction consistency, and partner integrations for a large-scale pharmaceutical marketplace.</p>
-                <div class="tags"><span class="tag">Spring Boot</span><span class="tag">Redis</span><span class="tag">RabbitMQ</span><span class="tag">Kubernetes</span></div>
-              </div>
-            </summary>
-            <div class="project-detail">
-              <ul>
-                <li>Supported 170,000+ downstream buyers and 500 TPS peak traffic during promotional events.</li>
-                <li>Implemented idempotent APIs, distributed locking, TCC workflows, and resilient integrations with 6 partner systems.</li>
-                <li>Maintained 99.9% API success rate with observability, blue-green deployments, and rapid rollback paths.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="project-card">
-            <summary>
-              <div class="project-topline"><span>04 · AI Product Systems</span><span aria-hidden="true">+</span></div>
-              <div>
-                <h3 class="project-title">Intelligent Supply Chain Platform</h3>
-                <p class="project-desc">Product roadmap and data systems for supplier onboarding, product evaluation, pricing, and listing workflows.</p>
-                <div class="tags"><span class="tag">Roadmap</span><span class="tag">Agile</span><span class="tag">Data Products</span><span class="tag">B2B</span></div>
-              </div>
-            </summary>
-            <div class="project-detail">
-              <ul>
-                <li>Led roadmap execution across 12 product managers and 70+ engineers through 30+ iterations.</li>
-                <li>Built supplier onboarding and qualification modules that improved contracting efficiency by 30%.</li>
-                <li>Integrated subsidiary databases into master data workflows, improving data accuracy and reducing manual processes.</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-        <div class="project-archive">
-          <a href="projects/index.html">Explore six product case studies <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section field-notes" id="field-notes" aria-labelledby="field-notes-title">
-      <div class="container">
-        <article class="notes-banner">
-          <div class="notes-topline">
-            <div class="notes-label">Field Notes · Product × AI × Engineering</div>
-            <div class="notes-status">Field Note 02 · Reading Notes</div>
-          </div>
-          <div class="notes-copy">
-            <h2 class="notes-title" id="field-notes-title">Super-agent 设计探索：迈向更自主的 Agent 系统 — Reading Notes</h2>
-            <p class="notes-intro">My biggest takeaway is that reliable, persistent agents at scale still rest on the principles of established systems design.</p>
-          </div>
-          <div class="notes-footer">
-            <div class="notes-route" aria-label="Super-agent themes">
-              <div class="notes-topic">Architecture<span>Router–Worker coordination and concurrent sessions</span></div>
-              <div class="notes-topic">Interaction<span>Event-driven execution and asynchronous tools</span></div>
-              <div class="notes-topic">Reliability<span>State separation, recovery, and experimental limits</span></div>
-            </div>
-            <a class="notes-link" href="field-notes/deepseek-superagent.html" aria-label="Super-agent 设计探索：迈向更自主的 Agent 系统 — Reading Notes">Read field note <span aria-hidden="true">→</span></a>
-          </div>
+      <div class="experience-list">
+        <article class="experience-row">
+          <div class="experience-time">May 2025 – Feb 2026</div>
+          <div class="experience-role"><h3>Research Engineering Intern</h3><div class="experience-org">Harvard Medical School &amp; MGH</div></div>
+          <p>Designed clinical RAG and graph reasoning pipelines across 2,000+ guidelines and 54K+ medical knowledge chunks.</p>
         </article>
-        <article class="notes-banner">
-          <svg class="notes-contours" viewBox="0 0 720 620" fill="none" aria-hidden="true">
-            <path d="M750 64C650 20 561 31 503 95c-55 60-57 151-133 183-76 32-184 0-241 64-58 65-9 142-82 211" stroke="currentColor"/>
-            <path d="M756 112c-91-40-168-25-212 30-47 59-31 129-105 170-73 41-183 8-231 62-54 61-8 130-79 198" stroke="currentColor"/>
-            <path d="M764 162c-75-31-137-15-170 28-43 57-16 112-85 159-70 48-174 20-215 68-44 52-4 108-63 172" stroke="currentColor"/>
-            <path d="M768 216c-63-23-111-6-134 30-34 51-5 91-64 138-64 51-156 33-189 73-36 44-1 87-47 142" stroke="currentColor"/>
-            <circle cx="428" cy="338" r="6" fill="currentColor"/>
-          </svg>
-
-          <div class="notes-topline">
-            <div class="notes-label">Field Notes · Product × AI × Engineering</div>
-            <div class="notes-status">Field Note 01 · 8 min read</div>
-          </div>
-
-          <div class="notes-copy">
-            <h2 class="notes-title" id="rag-field-note-title">Designing a RAG System, Layer by Layer.</h2>
-            <p class="notes-intro">The pipeline behind a production system, and the question worth asking at each layer.</p>
-          </div>
-
-          <div class="notes-footer" id="notes-topics">
-            <div class="notes-route" aria-label="Field Notes themes">
-              <div class="notes-topic">AI<span>Retrieval architecture beyond the four-step demo</span></div>
-              <div class="notes-topic">Engineering<span>Seven layers built for production change</span></div>
-              <div class="notes-topic">Systems<span>Evaluation, reliability, and cost governance</span></div>
-            </div>
-            <a class="notes-link" href="field-notes/rag-system-layer-by-layer.html" aria-label="Read Designing a RAG System, Layer by Layer">Read field note <span aria-hidden="true">→</span></a>
-          </div>
+        <article class="experience-row">
+          <div class="experience-time">Jan 2025 – Apr 2025</div>
+          <div class="experience-role"><h3>ML / Software Engineering Intern</h3><div class="experience-org">United Imaging Intelligence America</div></div>
+          <p>Built medical imaging ML pipelines, TensorRT acceleration, distributed jobs, observability, and deployment tooling.</p>
+        </article>
+        <article class="experience-row">
+          <div class="experience-time">2020 – 2023</div>
+          <div class="experience-role"><h3>Software Engineer &amp; Product Leader</h3><div class="experience-org">Leyo Pharm / YSB Inc.</div></div>
+          <p>Led pharmaceutical B2B systems spanning settlement, supplier onboarding, master data, and high-availability services.</p>
+        </article>
+        <article class="experience-row">
+          <div class="experience-time">Education</div>
+          <div class="experience-role"><h3>Software Engineering &amp; Technology Management</h3><div class="experience-org">Northeastern · Sun Yat-sen</div></div>
+          <p>Engineering depth paired with product, operations, and technology management training.</p>
         </article>
       </div>
     </section>
 
-    <section class="section skills" id="skills" aria-labelledby="skills-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Skills</div>
-            <h2 class="section-title" id="skills-title">A full-stack AI builder toolkit.</h2>
-          </div>
-          <p class="lede">I work across models, retrieval systems, backend services, cloud infrastructure, and product strategy.</p>
-        </div>
+    <section class="log-card projects-card" id="projects" aria-labelledby="projects-title">
+      <div class="log-index">Entry 04 / Selected work</div>
+      <div class="section-label">Projects</div>
+      <h2 class="section-title" id="projects-title">Systems with measurable consequences.</h2>
+      <p class="section-intro">A compact index of the problems, systems, and outcomes behind my work.</p>
 
-        <div class="skill-grid">
-          <article class="skill-card">
-            <h3>AI / ML</h3>
-            <p>PyTorch, TensorFlow, TensorRT, LangGraph, LangChain, LlamaIndex, HuggingFace, Transformers, RAG, embeddings, prompt engineering, Scikit-learn, MLflow.</p>
-          </article>
-          <article class="skill-card">
-            <h3>Backend / Data</h3>
-            <p>Python, Java, FastAPI, Flask, Django, Spring Boot, JavaScript, TypeScript, SQL, PostgreSQL, MongoDB, Redis, Elasticsearch, Neo4j.</p>
-          </article>
-          <article class="skill-card">
-            <h3>Cloud / MLOps</h3>
-            <p>AWS, Azure, GCP, Docker, Kubernetes, Terraform, RabbitMQ, Celery, Prometheus, Grafana, CI/CD, distributed jobs, monitoring.</p>
-          </article>
-          <article class="skill-card">
-            <h3>Product</h3>
-            <p>Roadmap strategy, Agile execution, success metrics, stakeholder alignment, healthcare workflows, pharmaceutical B2B systems, data-driven product operations.</p>
-          </article>
-        </div>
+      <div class="project-list">
+        <article class="project-item"><div class="project-type">Healthcare AI</div><h3>Clinical Triage RAG Agent</h3><p>90% triage accuracy and 98% high-risk escalation coverage in a 500-patient pilot.</p></article>
+        <article class="project-item"><div class="project-type">Medical Imaging ML</div><h3>Annotation ML Platform</h3><p>Supported 5 teams processing more than 80,000 images per day.</p></article>
+        <article class="project-item"><div class="project-type">Platform Engineering</div><h3>Pharmaceutical B2B Platform</h3><p>Served 170,000+ buyers and maintained a 99.9% API success rate.</p></article>
+        <article class="project-item"><div class="project-type">AI Product Systems</div><h3>Intelligent Supply Chain</h3><p>Improved supplier contracting efficiency by 30% across complex data workflows.</p></article>
+      </div>
+      <a class="archive-link" href="projects/index.html">Open six detailed product case studies <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <section class="log-card skills-card" id="skills" aria-labelledby="skills-title">
+      <div class="log-index">Entry 05 / Toolkit</div>
+      <div class="section-label">Toolkit</div>
+      <h2 class="section-title" id="skills-title">The tools behind the work.</h2>
+      <p class="section-intro">Models, retrieval, backend services, infrastructure, and product strategy in one working stack.</p>
+
+      <div class="skills-layout">
+        <article class="skill-group"><h3>AI / ML</h3><p>PyTorch, TensorFlow, TensorRT, LangGraph, LangChain, LlamaIndex, Hugging Face, RAG, embeddings, evaluation, MLflow.</p></article>
+        <article class="skill-group"><h3>Backend / Data</h3><p>Python, Java, FastAPI, Flask, Django, Spring Boot, TypeScript, PostgreSQL, MongoDB, Redis, Elasticsearch, Neo4j.</p></article>
+        <article class="skill-group"><h3>Cloud / MLOps</h3><p>AWS, Azure, GCP, Docker, Kubernetes, Terraform, RabbitMQ, Celery, Prometheus, Grafana, CI/CD.</p></article>
+        <article class="skill-group"><h3>Product</h3><p>Roadmaps, success metrics, stakeholder alignment, healthcare workflows, pharmaceutical B2B, data product operations.</p></article>
       </div>
     </section>
 
-    <section class="section approach" id="approach" aria-labelledby="approach-title">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">Approach</div>
-            <h2 class="section-title" id="approach-title">From model capability to real adoption.</h2>
-          </div>
-          <p class="lede">Strong models matter, but lasting impact comes from reliable systems, clear evidence, and workflows people trust.</p>
-        </div>
-
-        <div class="principles">
-          <article class="principle">
-            <div class="principle-icon">01</div>
-            <h3>Ground the system</h3>
-            <p>Use retrieval, ontologies, provenance, and evaluation to keep AI output tied to the evidence users need.</p>
-          </article>
-          <article class="principle">
-            <div class="principle-icon">02</div>
-            <h3>Design for workflow</h3>
-            <p>Build around the way clinicians, annotators, operators, and product teams actually make decisions.</p>
-          </article>
-          <article class="principle">
-            <div class="principle-icon">03</div>
-            <h3>Ship reliably</h3>
-            <p>Invest in APIs, queues, observability, deployment, and fault isolation so prototypes can survive production use.</p>
-          </article>
+    <section class="log-card contact-card" id="contact" aria-labelledby="contact-title">
+      <div class="log-index">Entry 06 / Contact</div>
+      <div>
+        <div class="section-label">Contact</div>
+        <h2 class="section-title" id="contact-title">Let’s build useful AI systems.</h2>
+        <p class="section-intro">I’m open to AI engineering, product-focused AI, healthcare AI, and intelligent systems opportunities.</p>
+        <div class="contact-actions">
+          <a class="pill-link primary" href="mailto:0721gqh@gmail.com">Email me</a>
+          <a class="pill-link" href="https://www.linkedin.com/in/qiaohui-gao/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a class="pill-link" href="https://github.com/QiaohuiGao" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
       </div>
+      <div class="contact-stamp"><strong>Bonnie Gao</strong>AI builder<br>Boston, MA</div>
     </section>
-
-    <section class="contact" id="contact" aria-labelledby="contact-title">
-      <div class="container contact-grid">
-        <div>
-          <div class="kicker">Contact</div>
-          <h2 class="section-title" id="contact-title">Let’s build useful AI systems.</h2>
-          <p class="lede">I am open to AI engineering, product-focused AI, healthcare AI, and intelligent systems opportunities.</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="mailto:0721gqh@gmail.com">Email me <span aria-hidden="true">→</span></a>
-            <a class="btn" href="https://www.linkedin.com/in/qiaohui-gao/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="btn" href="https://github.com/QiaohuiGao" target="_blank" rel="noopener noreferrer">GitHub</a>
-          </div>
-        </div>
-        <aside class="contact-card">
-          <strong>Bonnie Gao</strong>
-          <p>AI Builder · Healthcare AI · ML Systems</p>
-          <p>Boston, MA</p>
-        </aside>
-      </div>
-    </section>
-
-    <footer>
-      © 2026 Bonnie Gao. Built as a static portfolio for GitHub Pages.
-    </footer>
   </main>
 
   <script>
     const body = document.body;
-    const toggle = document.querySelector(".menu-toggle");
-    const navLinks = document.querySelector(".nav-links");
-    const mobileQuery = window.matchMedia("(max-width: 980px)");
-    const links = [...document.querySelectorAll(".nav-links a")];
-    const sections = links
-      .map((link) => document.querySelector(link.getAttribute("href")))
-      .filter(Boolean);
+    const stream = document.querySelector(".stream");
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = [...document.querySelectorAll(".side-nav a")];
+    const internalLinks = [...document.querySelectorAll('a[href^="#"]')];
+    const sections = navLinks.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function scrollToCard(target, behavior = "smooth") {
+      const targetTop = target.getBoundingClientRect().top - stream.getBoundingClientRect().top + stream.scrollTop - 22;
+      stream.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: reducedMotion.matches ? "auto" : behavior
+      });
+    }
 
     function setMenu(open) {
-      body.classList.toggle("nav-open", open);
-      toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
-      syncMenuAccessibility();
+      body.classList.toggle("menu-open", open);
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute("aria-label", open ? "Close log index" : "Open log index");
     }
 
-    function syncMenuAccessibility() {
-      const isMobileClosed = mobileQuery.matches && !body.classList.contains("nav-open");
-      navLinks.inert = isMobileClosed;
-    }
+    menuToggle.addEventListener("click", () => setMenu(!body.classList.contains("menu-open")));
 
-    toggle.addEventListener("click", () => {
-      setMenu(!body.classList.contains("nav-open"));
-    });
-
-    navLinks.addEventListener("click", (event) => {
-      if (event.target.matches("a")) setMenu(false);
+    internalLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const target = document.querySelector(link.getAttribute("href"));
+        if (!target) return;
+        event.preventDefault();
+        scrollToCard(target);
+        history.replaceState(null, "", link.getAttribute("href"));
+        setMenu(false);
+      });
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        setMenu(false);
-        document.querySelectorAll(".project-card[open]").forEach((card) => {
-          card.open = false;
-        });
-      }
+      if (event.key === "Escape") setMenu(false);
     });
 
     const observer = new IntersectionObserver((entries) => {
       const visible = entries
         .filter((entry) => entry.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
       if (!visible) return;
-
-      links.forEach((link) => {
+      navLinks.forEach((link) => {
         link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`);
       });
-    }, {
-      rootMargin: "-28% 0px -58% 0px",
-      threshold: [0.12, 0.28, 0.45]
-    });
+    }, { root: stream, rootMargin: "-18% 0px -58% 0px", threshold: [0.1, 0.25, 0.5] });
 
     sections.forEach((section) => observer.observe(section));
-    mobileQuery.addEventListener("change", () => {
-      if (!mobileQuery.matches) setMenu(false);
-      syncMenuAccessibility();
+
+    function settleInitialHash() {
+      const targetHash = window.__initialHash || location.hash;
+      if (!targetHash) return;
+      const initialTarget = document.querySelector(targetHash);
+      if (initialTarget) {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollLeft = 0;
+        document.body.scrollLeft = 0;
+        stream.style.scrollSnapType = "none";
+        scrollToCard(initialTarget, "auto");
+        history.replaceState(null, "", targetHash);
+        setTimeout(() => { stream.style.scrollSnapType = ""; }, 120);
+      }
+    }
+
+    requestAnimationFrame(settleInitialHash);
+    window.addEventListener("load", () => {
+      settleInitialHash();
+      if (document.fonts?.ready) document.fonts.ready.then(settleInitialHash);
     });
-    syncMenuAccessibility();
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 820) setMenu(false);
+    });
   </script>
 </body>
 </html>
