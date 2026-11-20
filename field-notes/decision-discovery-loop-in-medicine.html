@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A conceptual framework connecting patient-level clinical decisions with population-level medical discovery." />
+  <meta name="theme-color" content="#304854" />
+  <meta property="og:title" content="A Unified Decision and Discovery Loop in Medicine | Bonnie Gao" />
+  <meta property="og:description" content="How evidence, assessment, action, feedback, and population learning might fit into one connected system." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://qiaohuigao.github.io/qiaohui-portfolio/field-notes/decision-discovery-loop-in-medicine.html" />
+  <link rel="canonical" href="https://qiaohuigao.github.io/qiaohui-portfolio/field-notes/decision-discovery-loop-in-medicine.html" />
+  <title>A Unified Decision and Discovery Loop in Medicine | Bonnie Gao</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,620;9..144,720&family=Instrument+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="medical-loops.css" />
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to article</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="logo" href="../index.html">Bonnie Gao.</a>
+      <a class="back-link" href="../index.html#field-notes">Back to Field Notes</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Field Note 03 · Medical AI · Conceptual framework</p>
+      <h1>A Unified Decision and Discovery Loop in Medicine</h1>
+      <p class="deck">Connecting patient-level decisions with population-level learning—without confusing feedback from one patient with evidence that generalizes.</p>
+      <div class="byline"><span>Written by Bonnie Gao</span><span>Conceptual note · Not clinical guidance</span></div>
+    </div>
+  </header>
+
+  <main class="article-layout" id="article">
+    <aside class="contents" aria-label="On this page">
+      <h2>On this page</h2>
+      <ol>
+        <li><a href="#clinical-loop">A recurring clinical loop</a></li>
+        <li><a href="#uncertainty">Reasoning under uncertainty</a></li>
+        <li><a href="#two-levels">Learning across patients</a></li>
+        <li><a href="#questions">Questions to solve</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </aside>
+
+    <article class="article-body">
+      <p class="opening">Looking at a diagram of the scientific discovery loop—propose an experiment, run it, evaluate the result—I started thinking about a similar pattern in medicine.</p>
+      <p>Across specialties, we collect information, interpret it, choose an action, and observe what happens. Those observations then inform the next decision.</p>
+      <p class="loop-statement">Gather information → Update an assessment → Act → Learn from feedback.</p>
+      <p>The evidence may come from symptoms, laboratory tests, images, or treatment responses. The questions keep recurring.</p>
+
+      <section id="clinical-loop" aria-labelledby="clinical-loop-title">
+        <h2 id="clinical-loop-title">A recurring clinical loop</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Step</th><th scope="col">Question</th><th scope="col">What it contributes</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Observe</th><td>What evidence do we have?</td><td>Symptoms, history, examination findings, and test results</td></tr>
+              <tr><th scope="row">Infer</th><td>What could explain the evidence?</td><td>A working assessment, alternative explanations, and uncertainty</td></tr>
+              <tr><th scope="row">Act</th><td>What should happen next?</td><td>Further questions, testing, observation, referral, or treatment</td></tr>
+              <tr><th scope="row">Evaluate and update</th><td>What happened, and does it change our judgment?</td><td>A revised assessment and the next decision</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>There are established ideas behind this view. The National Academies describes diagnosis as an iterative process of gathering information, interpreting it, and updating a working diagnosis.<sup><a href="#ref-1">1</a></sup> A partially observable Markov decision process, or <strong>POMDP</strong>, provides a mathematical framework for choosing actions when the underlying state cannot be observed directly.<sup><a href="#ref-2">2</a></sup></p>
+      </section>
+
+      <section id="uncertainty" aria-labelledby="uncertainty-title">
+        <h2 id="uncertainty-title">Reasoning under uncertainty</h2>
+        <p>I find this a useful way to think about medicine. We have incomplete observations of a patient’s condition, and our actions can change both that condition and what we know about it. I would map the concepts as follows.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Concept</th><th scope="col">Interpretation in patient care</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Latent state</th><td>The patient’s underlying condition, which we can only partly observe</td></tr>
+              <tr><th scope="row">Observation</th><td>Symptoms, examination findings, images, laboratory results, and history</td></tr>
+              <tr><th scope="row">Belief state</th><td>Our current assessment of possible patient states and the uncertainty around them</td></tr>
+              <tr><th scope="row">Action</th><td>Asking, testing, observing, referring, treating, or adjusting treatment</td></tr>
+              <tr><th scope="row">Policy</th><td>A rule for choosing the next action from the current assessment</td></tr>
+              <tr><th scope="row">Utility</th><td>Patient benefit considered alongside harm, burden, and preferences</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>This is where I see an opportunity for AI. Evidence, assessments, actions, and outcomes need to remain connected throughout care. A new scan should update our understanding of the same patient. A decision should retain its rationale. What actually happens afterward should inform the next decision.</p>
+        <p>My hypothesis is that some abilities within this process could transfer across medical tasks: recognizing missing information, choosing useful observations, revising a hypothesis, and deciding when to act. Disease mechanisms and treatment options still require specific knowledge. The question is how much of the decision process can be shared.</p>
+      </section>
+
+      <section id="two-levels" aria-labelledby="two-levels-title">
+        <h2 id="two-levels-title">From one patient to learning across patients</h2>
+        <p>At a larger scale, the <strong>Learning Health System</strong> connects experience from care with knowledge that improves subsequent care.<sup><a href="#ref-3">3</a></sup> I think of this as a connection between two levels of learning.</p>
+        <figure class="concept-figure">
+          <img src="../assets/field-notes/medical-loops/decision-discovery-loop.svg" alt="Patient care loop connected to a population-level discovery loop" width="1200" height="720" />
+          <figcaption>My conceptual view of the connection between patient care and medical learning. Population research draws on the evidence, decisions, actions, and outcomes recorded across care trajectories.</figcaption>
+        </figure>
+        <p>The two levels update different things.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Level</th><th scope="col">Main question</th><th scope="col">What gets updated</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Patient-level clinical loop</th><td>What is happening to this patient, and what should we do next?</td><td>The patient’s assessment and care plan</td></tr>
+              <tr><th scope="row">Population-level discovery loop</th><td>Which findings generalize, and what works for whom?</td><td>Medical knowledge, models, and decision strategies</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A patient’s response can help revise that patient’s assessment. Establishing a general treatment effect requires appropriate comparisons and validation. Connecting the two levels means making those additional steps explicit.</p>
+        <aside class="evidence-note"><strong>Evidence boundary</strong>This is a conceptual framework, not a claim that individual patient feedback alone establishes general medical knowledge. Population-level conclusions still require appropriate study design, comparison, validation, and safety oversight.</aside>
+      </section>
+
+      <section id="questions" aria-labelledby="questions-title">
+        <h2 id="questions-title">Three questions worth pursuing</h2>
+        <div class="questions">
+          <div class="question"><strong>How should we represent the process?</strong>We need to preserve the timing, source, and uncertainty of evidence, assessments, actions, and outcomes.</div>
+          <div class="question"><strong>What can transfer across specialties?</strong>Which decision-making abilities are shared, and which depend on specific clinical knowledge?</div>
+          <div class="question"><strong>What should feedback update?</strong>When should a result change our understanding of one patient, and when should it prompt us to question more general knowledge?</div>
+        </div>
+        <p class="closing-thought">I want to start with one patient’s care journey, make these connections explicit, and then examine what can be learned across patients.</p>
+      </section>
+
+      <section class="references" id="references" aria-labelledby="references-title">
+        <h2 id="references-title">References</h2>
+        <ol>
+          <li id="ref-1">National Academies of Sciences, Engineering, and Medicine. <em>Improving Diagnosis in Health Care</em>. 2015. <a href="https://www.ncbi.nlm.nih.gov/books/NBK338593/" target="_blank" rel="noopener">Chapter 2: The Diagnostic Process</a>.</li>
+          <li id="ref-2">Kaelbling LP, Littman ML, Cassandra AR. <a href="https://people.csail.mit.edu/lpk/papers/aij98-pomdp.pdf" target="_blank" rel="noopener">Planning and acting in partially observable stochastic domains</a>. <em>Artificial Intelligence</em>. 1998;101:99–134.</li>
+          <li id="ref-3">National Academy of Medicine. <a href="https://nam.edu/our-work/programs/leadership-consortium/learning-health-system/" target="_blank" rel="noopener">Learning Health System</a>.</li>
+        </ol>
+      </section>
+    </article>
+  </main>
+
+  <section class="article-end" aria-label="Continue reading"><h2>Continue through the second loop.</h2><a href="assessment-management-loops.html">Read Assessment and Management: Two Interacting Loops</a></section>
+  <footer>© 2026 Bonnie Gao.</footer>
+  <script>const bar=document.querySelector('.reading-progress');addEventListener('scroll',()=>{const d=document.documentElement;const max=d.scrollHeight-d.clientHeight;bar.style.width=(max?d.scrollTop/max*100:0)+'%';},{passive:true});</script>
+</body>
+</html>

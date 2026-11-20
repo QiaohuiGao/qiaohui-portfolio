@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A conceptual model of clinical assessment and care management as two interacting feedback loops around a shared patient state." />
+  <meta name="theme-color" content="#304854" />
+  <meta property="og:title" content="Assessment and Management: Two Interacting Loops | Bonnie Gao" />
+  <meta property="og:description" content="Why patient-facing AI needs to connect assessment, execution, and feedback without collapsing them into one record." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://qiaohuigao.github.io/qiaohui-portfolio/field-notes/assessment-management-loops.html" />
+  <link rel="canonical" href="https://qiaohuigao.github.io/qiaohui-portfolio/field-notes/assessment-management-loops.html" />
+  <title>Assessment and Management: Two Interacting Loops | Bonnie Gao</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,620;9..144,720&family=Instrument+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="medical-loops.css" />
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to article</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="logo" href="../index.html">Bonnie Gao.</a>
+      <a class="back-link" href="../index.html#field-notes">Back to Field Notes</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Field Note 04 · Patient-facing AI · Systems thinking</p>
+      <h1>Assessment and Management: Two Interacting Loops</h1>
+      <p class="deck">Care does not end at diagnosis. A useful system must distinguish what was recommended, what actually happened, and what changed afterward.</p>
+      <div class="byline"><span>Written by Bonnie Gao</span><span>Conceptual note · Not clinical guidance</span></div>
+    </div>
+  </header>
+
+  <main class="article-layout" id="article">
+    <aside class="contents" aria-label="On this page">
+      <h2>On this page</h2>
+      <ol>
+        <li><a href="#two-loops">Two loops, one patient</a></li>
+        <li><a href="#patient-facing-ai">Patient-facing AI</a></li>
+        <li><a href="#memory">What the loop remembers</a></li>
+        <li><a href="#questions">Questions to solve</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </aside>
+
+    <article class="article-body">
+      <p class="opening">The more I thought about a common loop in medicine, the less complete “collect information, analyze it, make a diagnosis” seemed. Care continues after a diagnosis.</p>
+      <p>Treatment produces new observations, and those observations may change both our understanding and our next action.</p>
+      <p>I now picture two interacting loops, roughly like a figure eight.</p>
+      <p>One loop updates our understanding of the patient. The other selects, implements, and adjusts care. I use <em>clinical assessment</em> rather than only <em>diagnosis</em> because evaluation continues throughout treatment: we keep assessing disease control, treatment response, and new problems.</p>
+
+      <section id="two-loops" aria-labelledby="two-loops-title">
+        <h2 id="two-loops-title">Two loops around the same patient</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Dimension</th><th scope="col">Clinical assessment loop</th><th scope="col">Care management loop</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Main question</th><td>What is happening, and what remains uncertain?</td><td>What should happen next?</td></tr>
+              <tr><th scope="row">Recurring work</th><td>Gather evidence, interpret it, update the assessment, and identify missing information</td><td>Choose a plan, carry it out, monitor the response, and adjust</td></tr>
+              <tr><th scope="row">Main output</th><td>A working assessment with supporting evidence and uncertainty</td><td>A care plan, a record of actual actions, and follow-up observations</td></tr>
+              <tr><th scope="row">What drives another iteration</th><td>Missing, conflicting, or unexpected evidence</td><td>A change in the patient’s condition, goals, response, or ability to follow the plan</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Cook and colleagues’ distinction between <em>diagnostic reasoning</em> and <em>management reasoning</em> provides a useful basis for this view. Choosing and adjusting a management plan requires reasoning about patient goals, practical constraints, and evolving information.<sup><a href="#ref-1">1</a></sup></p>
+        <figure class="concept-figure">
+          <img src="../assets/field-notes/medical-loops/assessment-management-loop.svg" alt="Clinical assessment and care management loops connected by a shared patient state" width="1200" height="720" />
+          <figcaption>My conceptual view of the assessment and management loops within one patient’s care. The shared state records the current assessment, uncertainty, goals, plan, and actual actions. New observations feed back into assessment.</figcaption>
+        </figure>
+        <p>Assessment guides action. The chosen action determines what we need to monitor. The response then informs the next assessment and management decision. These interactions can happen repeatedly within a visit or across weeks of follow-up.</p>
+      </section>
+
+      <section id="patient-facing-ai" aria-labelledby="patient-facing-ai-title">
+        <h2 id="patient-facing-ai-title">Where patient-facing AI might help</h2>
+        <p>This helps clarify what I want to explore in <strong>patient-facing AI</strong>. I am especially interested in the time between visits. An AI system could track pending results, gather missing information, check whether a plan was actually followed, and help arrange reassessment when something changes. It would need to connect these judgments to services the patient can actually access.</p>
+        <p>I would analyze this work by function—assessment, decision-making, and execution—and ask where AI can help the people carrying out each part.</p>
+      </section>
+
+      <section id="memory" aria-labelledby="memory-title">
+        <h2 id="memory-title">What a feedback loop needs to remember</h2>
+        <p>For this to work, the system must keep three things separate.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Record</th><th scope="col">What it captures</th><th scope="col">Why it matters</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Recommended action</th><td>What the patient and care team planned to do</td><td>Preserves the intention behind the plan</td></tr>
+              <tr><th scope="row">Executed action</th><td>What actually happened, when, and with what obstacles</td><td>Establishes whether and how the plan was carried out</td></tr>
+              <tr><th scope="row">Observed response</th><td>What changed afterward, including symptoms and test results</td><td>Supplies evidence for reassessment and adjustment</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>If a patient does not improve, knowing the recommendation alone is insufficient. We also need to know whether it was carried out before interpreting the result.</p>
+        <p>Existing research makes this direction worth pursuing. AMIE has studied disease management across multiple simulated visits.<sup><a href="#ref-2">2</a></sup> In a small trial involving 32 patients, a voice-based system used clinician-selected dosing rules and patient reports to support insulin adjustment, reaching the study-defined optimal dose sooner.<sup><a href="#ref-3">3</a></sup> These are different forms of evidence: simulated management reasoning in the first case, and a narrow, rules-based feedback loop in real care in the second.</p>
+        <aside class="evidence-note"><strong>Evidence boundary</strong>The AMIE study used constructed multivisit scenarios with professional patient actors and explicitly does not establish readiness for clinical care. The insulin study was a small, narrow randomized trial. Neither study demonstrates a general autonomous care system.</aside>
+      </section>
+
+      <section id="questions" aria-labelledby="questions-title">
+        <h2 id="questions-title">The next questions are concrete</h2>
+        <div class="questions">
+          <div class="question"><strong>What patient state should the system maintain?</strong>Which evidence, uncertainties, unresolved questions, and action records are necessary for the next decision?</div>
+          <div class="question"><strong>How do we connect actions to feedback?</strong>How can the system establish what actually happened and interpret the response in that context?</div>
+          <div class="question"><strong>When should the system initiate the next step?</strong>Which changes warrant another question, reassessment, or involvement from a clinician?</div>
+        </div>
+        <p class="closing-thought">I am particularly interested in patients who struggle to get timely clinical attention. I would judge this idea by whether connecting the two loops helps them receive appropriate care sooner, with fewer missed problems, delays, and unnecessary interventions.</p>
+      </section>
+
+      <section class="references" id="references" aria-labelledby="references-title">
+        <h2 id="references-title">References</h2>
+        <ol>
+          <li id="ref-1">Cook DA, Sherbino J, Durning SJ. <a href="https://jamanetwork.com/journals/jama/fullarticle/2681495" target="_blank" rel="noopener">Management Reasoning: Beyond the Diagnosis</a>. <em>JAMA</em>. 2018;319:2267–2268.</li>
+          <li id="ref-2">Liévin V, et al. <a href="https://www.nature.com/articles/s41586-026-10764-5" target="_blank" rel="noopener">Towards conversational artificial intelligence for disease management</a>. <em>Nature</em>. 2026;655:1292–1299.</li>
+          <li id="ref-3">Nayak A, et al. <a href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2812420" target="_blank" rel="noopener">Use of Voice-Based Conversational Artificial Intelligence for Basal Insulin Prescription Management Among Patients With Type 2 Diabetes: A Randomized Clinical Trial</a>. <em>JAMA Network Open</em>. 2023;6:e2340232.</li>
+        </ol>
+      </section>
+    </article>
+  </main>
+
+  <section class="article-end" aria-label="Continue reading"><h2>Return to the larger discovery loop.</h2><a href="decision-discovery-loop-in-medicine.html">Read A Unified Decision and Discovery Loop in Medicine</a></section>
+  <footer>© 2026 Bonnie Gao.</footer>
+  <script>const bar=document.querySelector('.reading-progress');addEventListener('scroll',()=>{const d=document.documentElement;const max=d.scrollHeight-d.clientHeight;bar.style.width=(max?d.scrollTop/max*100:0)+'%';},{passive:true});</script>
+</body>
+</html>

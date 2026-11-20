@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Patient care and population discovery loops</title>
+  <desc id="desc">A patient care loop moves from gathering evidence to updating assessment, acting, and observing response. Complete trajectories support population research, which validates and updates medical knowledge that feeds back into assessment and action.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#47766f"/></marker>
+  </defs>
+  <rect width="1200" height="720" fill="#eef2f2"/>
+  <text x="72" y="72" font-family="Instrument Sans, Arial, sans-serif" font-size="25" font-weight="700" fill="#18262d">Care of an individual patient</text>
+  <text x="785" y="72" font-family="Instrument Sans, Arial, sans-serif" font-size="25" font-weight="700" fill="#18262d">Learning across patients</text>
+  <g font-family="Instrument Sans, Arial, sans-serif" font-size="21" text-anchor="middle">
+    <g fill="#304854" stroke="#8dc8b7" stroke-width="2">
+      <rect x="78" y="132" width="245" height="92" rx="18"/><rect x="397" y="132" width="245" height="92" rx="18"/>
+      <rect x="397" y="347" width="245" height="92" rx="18"/><rect x="78" y="347" width="245" height="92" rx="18"/>
+    </g>
+    <g fill="#fbf7ef">
+      <text x="200" y="188">Gather evidence</text><text x="520" y="175">Update</text><text x="520" y="202">assessment</text>
+      <text x="520" y="390">Choose and carry</text><text x="520" y="417">out an action</text>
+      <text x="200" y="390">Observe the</text><text x="200" y="417">response</text>
+    </g>
+    <g fill="#dfe9e7" stroke="#47766f" stroke-width="2">
+      <rect x="790" y="180" width="328" height="104" rx="18"/><rect x="790" y="366" width="328" height="104" rx="18"/>
+    </g>
+    <g fill="#18262d"><text x="954" y="226">Compare trajectories</text><text x="954" y="254">and test hypotheses</text><text x="954" y="412">Validate and update</text><text x="954" y="440">medical knowledge</text></g>
+  </g>
+  <g fill="none" stroke="#47766f" stroke-width="4" marker-end="url(#arrow)">
+    <path d="M323 178H389"/><path d="M520 224V337"/><path d="M397 393H332"/><path d="M200 347V234"/>
+    <path d="M954 284V356"/><path d="M642 393C715 393 718 232 780 232"/>
+    <path d="M790 418C700 418 708 178 652 178"/>
+  </g>
+  <text x="690" y="319" font-family="Instrument Sans, Arial, sans-serif" font-size="17" fill="#66747a">complete care trajectories</text>
+  <text x="623" y="536" font-family="Instrument Sans, Arial, sans-serif" font-size="17" fill="#66747a">validated knowledge informs the next assessment and action</text>
+  <line x1="72" y1="594" x2="1128" y2="594" stroke="#c9d4d4"/>
+  <text x="72" y="642" font-family="Fraunces, Georgia, serif" font-size="29" fill="#18262d">Different levels of learning, connected through complete trajectories.</text>
+</svg>
